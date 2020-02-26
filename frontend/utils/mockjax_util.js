@@ -34,7 +34,7 @@ $.mockjax({
   url: "/api/current",
   type: "PUT",
   responseDelay: 1000,
-  response: function(settings) {
+  response: function(settings) {  // settings is an object that includes keys ()
     
     let newData = {
       plan: settings.data.plan,
