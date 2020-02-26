@@ -1,8 +1,9 @@
 import React from 'react';
+import SelectPlan from './SelectPlan'
 
 const App = () => (
   //Frontend routes here
-  <div>You've got the App component</div>
+  <SelectPlan />
 
 
 )
