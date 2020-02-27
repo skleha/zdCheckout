@@ -30,16 +30,24 @@ $.mockjax({
 });
 
 $.mockjax({
-  url: "/api/skuone",
+  url: "/api/skuone/plans",
   type: "GET",
   responseText: PLAN_NAMES
 });
 
 $.mockjax({
-  url: "/api/skuone",
-  type: "GET",
-  responseText: PLAN_NAMES
+  url: "/api/preview",
+  type: "PUT",
+  response: function(settings) {
+    this.responseText = {
+      plan: settings.plan,
+      name: PLAN_NAMES[settings.plan],
+      seats: settings.seats,
+      cost: settings.seats * PLAN_COSTS[settings.data.plan]
+    }
+  }
 });
+
 
 
 

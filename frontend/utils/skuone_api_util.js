@@ -8,7 +8,8 @@ export const fetchCurrentPlan = () => {
 
 export const fetchAvailablePlans = () => {
   return $.ajax({
-    url: "/api/skuone",
+    url: "/api/skuone/plans",
     method: "GET"
   });
 }
+
