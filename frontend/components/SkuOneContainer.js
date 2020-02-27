@@ -5,6 +5,7 @@ import { fetchCurrentPlan } from '../actions/plan_actions';
 
 const mapStateToProps = state => ({
   currentPlan: Object.values(state.currentPlan),
+  
 });
 
 const mapDispatchToProps = dispatch => ({

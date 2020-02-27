@@ -8,17 +8,20 @@ class SkuOne extends React.Component {
     this.state = { currentPlan: null }
   }
 
+  componentDidMount() {
+    this.props.fetchCurrentPlan();
+  }
 
   render() {
     
-    if (!this.state.currentPlan) return (<div>No plan in state</div>);
-  
+    if (!this.props.currentPlan[0]) return (<div>Loading...</div>);
+    const showMe = JSON.stringify(this.props.currentPlan);
 
     return (
 
       <div>
   
-        You've got select plan
+        {showMe}
               
       </div>
 
