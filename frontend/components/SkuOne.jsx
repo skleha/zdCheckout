@@ -6,8 +6,8 @@ class SkuOne extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentPlan: "Good",
-      currentSeats: 0,
+      selectedPlan: "Better",
+      selectedSeats: 3,
     };
 
     this.handlePlanChange = this.handlePlanChange.bind(this);
@@ -15,35 +15,42 @@ class SkuOne extends React.Component {
   }
 
   componentDidMount() {
-    this.props.fetchCurrentPlan();
-    this.props.fetchAvailablePlans();
+    this.props.fetchCurrentPlan()
+      .then(res => this.setState({ selectedPlan: this.props.currentPlan[1]}));
+    this.props.fetchAvailablePlans()
+      .then(res => this.setState({ selectedSeats: this.props.currentPlan[2]}));
+    
   }
 
 
   handlePlanChange(e) {
-    this.setState({ currentPlan: e.target.value });
+    this.setState({ selectedPlan: e.target.value });
+    // if state's current plan !== o
   }
 
   handleSeatChange(e) {
-    this.setState({ currentSeats: e.target.value });
+    this.setState({ selectedSeats: e.target.value });
   }
 
   render() {
     
     if (!this.props.currentPlan[0]) return ("Loading...");
     const plans = this.props.availablePlans;
-
+    
     return (
       <div>
         <div>SkuOne Plan Options</div>
 
-        <select id="plan-input" value={this.state.currentPlan} onChange={this.handlePlanChange}>
+        <select id="plan-input" value={this.state.selectedPlan} onChange={this.handlePlanChange}>
           {plans.map((plan, idx) => (
             <option key={idx} value={plan}>{plan}</option>
           ))}
         </select>
 
-        <input type="number" value={this.state.currentSeats} onChange={this.handleSeatChange}/>
+        <input type="number" value={this.state.selectedSeats} onChange={this.handleSeatChange}/>
+
+        <button>Update Plan</button>
+
       </div>
     );
 
@@ -55,4 +62,6 @@ class SkuOne extends React.Component {
 export default SkuOne;
 
 
-// put selected on 
+// Problems
+// Can't set state when props populates
+// Select html element is one select behind
