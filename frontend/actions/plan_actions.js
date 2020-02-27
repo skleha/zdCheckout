@@ -7,7 +7,7 @@ const receiveCurrPlan = currentPlan => {
     type: RECEIVE_CURRENT_PLAN,
     currentPlan
   })
-}
+};
 
 export const fetchCurrentPlan = () => dispatch => (
   PlanAPIUtil.fetchCurrentPlan()
