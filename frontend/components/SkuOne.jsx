@@ -5,7 +5,6 @@ class SkuOne extends React.Component {
 
   constructor(props) {
     super(props);
-    
   }
 
   componentDidMount() {
@@ -15,19 +14,32 @@ class SkuOne extends React.Component {
 
   render() {
     
-
+    const plans = this.props.availablePlans;
+    const currentPlan = this.props.currentPlan[1];
+    
     return (
-
       <div>
-  
-        You have skuOne
-              
-      </div>
+        SkuOne Plan Options<br></br>
 
-    )
+        <select id="plan-input" value={currentPlan}>
+          {plans.map((plan, idx) => (
+            <option
+              key={idx}
+              value={plan}
+              >
+                {plan}
+            </option>
+          ))}
+        </select>
+      
+      </div>
+    );
 
   }
 
 }
 
 export default SkuOne;
+
+
+// put selected on 
