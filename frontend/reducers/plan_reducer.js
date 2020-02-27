@@ -7,7 +7,7 @@ const planReducer = (oldState = {}, action) => {
   switch (action.type) {
 
     case RECEIVE_CURRENT_PLAN:
-      return action.plan;
+      return action.currentPlan;
 
     default:
       return oldState;
