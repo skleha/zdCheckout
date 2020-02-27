@@ -1,10 +1,9 @@
 import React from 'react';
-import SelectPlan from './SelectPlan'
+import SkuOneContainer from './SkuOneContainer';
 
 const App = () => (
   //Frontend routes here
-  <SelectPlan />
-
+  <SkuOneContainer />
 
 )
 

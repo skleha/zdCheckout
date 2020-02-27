@@ -1,7 +1,7 @@
 import React from "react";
 
 
-class SelectPlan extends React.Component {
+class SkuOne extends React.Component {
 
   constructor(props) {
     super(props);
@@ -12,6 +12,7 @@ class SelectPlan extends React.Component {
   render() {
     
     if (!this.state.currentPlan) return (<div>No plan in state</div>);
+  
 
     return (
 
@@ -27,4 +28,4 @@ class SelectPlan extends React.Component {
 
 }
 
-export default SelectPlan;
+export default SkuOne;
