@@ -6,8 +6,10 @@ class SkuOne extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedPlan: "Better",
-      selectedSeats: 3,
+      selectedPlan: "better",
+      selectedName: "Better",
+      selectedSeats: 0,
+      selectedCost: 0,
       newPlan: false,
     };
 
@@ -17,10 +19,15 @@ class SkuOne extends React.Component {
 
   componentDidMount() {
     this.props.fetchCurrentPlan()
-      .then(res => this.setState({ selectedPlan: this.props.currentPlan[1]}));
-    this.props.fetchAvailablePlans()
-      .then(res => this.setState({ selectedSeats: this.props.currentPlan[2]}));
-    
+      .then(res => {
+        this.setState({ selectedPlan: this.props.currentPlan[0],
+                        selectedName: this.props.currentPlan[1],
+                        selectedSeats: this.props.currentPlan[2],
+                        selectedSeats: this.props.currentPlan[3],
+                      })
+      }
+    );
+    this.props.fetchAvailablePlans();
   }
 
 
@@ -35,6 +42,8 @@ class SkuOne extends React.Component {
 
   render() {
     
+    console.log(this.state);
+
     if (!this.props.currentPlan[0]) return ("Loading...");
     const plans = this.props.availablePlans;
     
@@ -49,6 +58,8 @@ class SkuOne extends React.Component {
         </select>
 
         <input type="number" value={this.state.selectedSeats} onChange={this.handleSeatChange}/>
+
+        <div></div>
 
         <button>Update Plan</button>
 
