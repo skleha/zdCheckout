@@ -43,7 +43,7 @@ $.mockjax({
       selectedPlan: request.data.settings.selectedPlan,
       selectedName: request.data.settings.selectedName,
       selectedSeats: request.data.settings.selectedSeats,
-      cost: request.data.settings.selectedSeats * PLAN_COSTS[request.data.settings.selectedPlan]
+      selectedCost: request.data.settings.selectedSeats * PLAN_COSTS[request.data.settings.selectedPlan]
     }
   }
 });

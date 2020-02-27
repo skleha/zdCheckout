@@ -30,30 +30,45 @@ class SkuOne extends React.Component {
     this.props.fetchAvailablePlans();
   }
 
+  getPlanName(plansAndNames, plan) {
+    return plansAndNames[plan];
+  }
 
   handlePlanChange(e) {
-    this.setState({ selectedName: e.target.value });
+    const plan = e.target.value;
+    const planName = this.getPlanName(this.props.plansAndNames, plan);
+
+    this.setState({ selectedPlan: plan,
+                    selectedName:  planName,
+                  });
+    
+    fetchPlanPricing(this.state)
+      .then(res => {
+        this.setState({res})
+      })
     
   }
 
   handleSeatChange(e) {
     this.setState({ selectedSeats: e.target.value });
+
   }
 
   render() {
     
-    
+    console.log(this.state);
 
     if (!this.props.currentPlan[0]) return ("Loading...");
-    const plans = this.props.availablePlans;
+    
+    const plans = Object.keys(this.props.plansAndNames);
     
     return (
       <div>
-        <div>SkuOne Plan Options</div>
+        <div>Support Plan Options</div>
 
         <select id="plan-input" value={this.state.selectedPlan} onChange={this.handlePlanChange}>
           {plans.map((plan, idx) => (
-            <option key={idx} value={plan}>{plan}</option>
+            <option key={idx} value={plan}>{this.getPlanName(this.props.plansAndNames, plan)}</option>
           ))}
         </select>
 
