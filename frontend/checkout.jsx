@@ -10,7 +10,9 @@ document.addEventListener("DOMContentLoaded", () => {
   // Functions defined on the window
   window.fetchCurrentPlan = fetchCurrentPlan;
   
-  
+  window.getState = store.getState;
+  window.dispatch = store.dispatch;
+
   const store = configureStore();
   const root = document.getElementById("root");
   ReactDOM.render(<Root store={store}/>, root);
