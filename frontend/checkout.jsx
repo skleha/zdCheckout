@@ -1,12 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import Root from "./components/Root";
-import { fetchPlan } from "./utils/plan_api_util.js";
+import { fetchCurrentPlan } from "./utils/plan_api_util.js";
 
 
 document.addEventListener("DOMContentLoaded", () => {
   
-  window.fetchPlan = fetchPlan;
+  window.fetchCurrentPlan = fetchCurrentPlan;
   
   
   const root = document.getElementById("root");
