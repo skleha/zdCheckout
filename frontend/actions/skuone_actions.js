@@ -28,7 +28,7 @@ export const fetchCurrentPlan = () => dispatch => (
     .then(plan => dispatch(receiveCurrPlan(plan)))
 );
 
-export const receiveAvailPlans = () => dispatch => (
+export const fetchAvailablePlans = () => dispatch => (
   SkuOneAPIUtil.fetchAvailablePlans()
     .then(plans => dispatch(receiveAvailPlans(plans)))
 );

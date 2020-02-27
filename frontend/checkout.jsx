@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import configureStore from './store/store';
 import Root from "./components/Root";
-import { fetchCurrentPlan } from "./actions/skuone_actions";
+import { fetchCurrentPlan, fetchAvailPlans } from "./actions/skuone_actions";
 
 
 document.addEventListener("DOMContentLoaded", () => {

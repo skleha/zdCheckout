@@ -1,4 +1,4 @@
-import { RECEIVE_CURRENT_PLAN } from '../actions/skuone_actions';
+import { RECEIVE_CURRENT_PLAN, RECEIVE_AVAILABLE_PLANS } from '../actions/skuone_actions';
 
 const skuOneReducer = (oldState = {}, action) => {
   Object.freeze(oldState);
@@ -7,7 +7,12 @@ const skuOneReducer = (oldState = {}, action) => {
   switch (action.type) {
 
     case RECEIVE_CURRENT_PLAN:
+      newState["currentPlan"] = action.currentPlan;
       return action.currentPlan;
+
+    case RECEIVE_AVAILABLE_PLANS:
+      newState["availablePlans"] = action.availablePlans;
+      return newState;
 
     default:
       return oldState;
