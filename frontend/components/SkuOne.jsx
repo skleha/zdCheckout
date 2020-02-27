@@ -5,22 +5,22 @@ class SkuOne extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { currentPlan: null }
+    
   }
 
   componentDidMount() {
     this.props.fetchCurrentPlan();
+    this.props.fetchAvailablePlans();
   }
 
   render() {
     
-    const showMe = JSON.stringify(this.props.skuone);
 
     return (
 
       <div>
   
-        {showMe}
+        You have skuOne
               
       </div>
 

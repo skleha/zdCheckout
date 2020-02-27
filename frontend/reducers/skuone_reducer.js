@@ -8,7 +8,7 @@ const skuOneReducer = (oldState = {}, action) => {
 
     case RECEIVE_CURRENT_PLAN:
       newState["currentPlan"] = action.currentPlan;
-      return action.currentPlan;
+      return newState;
 
     case RECEIVE_AVAILABLE_PLANS:
       newState["availablePlans"] = action.availablePlans;
