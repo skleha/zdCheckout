@@ -14,8 +14,7 @@ class SkuOne extends React.Component {
 
   render() {
     
-    if (!this.props.currentPlan[0]) return (<div>Loading...</div>);
-    const showMe = JSON.stringify(this.props.currentPlan);
+    const showMe = JSON.stringify(this.props.skuone);
 
     return (
 

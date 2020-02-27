@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import configureStore from './store/store';
 import Root from "./components/Root";
-import { fetchCurrentPlan, fetchAvailPlans } from "./actions/skuone_actions";
+import { fetchCurrentPlan, fetchAvailablePlans } from "./actions/skuone_actions";
 
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
   
   // Functions defined on the window
   window.fetchCurrentPlan = fetchCurrentPlan;
+  window.fetchAvailablePlans = fetchAvailablePlans
   window.getState = store.getState;
   window.dispatch = store.dispatch;
 
