@@ -1,6 +1,6 @@
 import { RECEIVE_CURRENT_PLAN, RECEIVE_AVAILABLE_PLANS } from '../actions/skuone_actions';
 
-const skuOneReducer = (oldState = {}, action) => {
+const skuOneReducer = (oldState = {currentPlan: [], availablePlans: []}, action) => {
   Object.freeze(oldState);
   let newState = Object.assign({}, oldState);
 
