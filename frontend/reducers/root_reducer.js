@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
-import planReducer from './plan_reducer';
+import skuOneReducer from './skuone_reducer';
 
 const rootReducer = combineReducers({
-  currentPlan: planReducer,
+  skuone: skuOneReducer,
 
 });
 

@@ -1,10 +1,10 @@
 import { connect } from 'react-redux';
 import SkuOne from './SkuOne';
-import { fetchCurrentPlan } from '../actions/plan_actions';
+import { fetchCurrentPlan } from '../actions/skuone_actions';
 
 
 const mapStateToProps = state => ({
-  currentPlan: Object.values(state.currentPlan),
+  currentPlan: Object.values(state.skuone),
   
 });
 

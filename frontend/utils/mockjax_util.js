@@ -29,6 +29,12 @@ $.mockjax({
   responseText: currSubscription
 });
 
+$.mockjax({
+  url: "/api/skuone",
+  type: "GET",
+  responseText: PLAN_NAMES
+});
+
 
 $.mockjax({
   url: "/api/skuone/current",

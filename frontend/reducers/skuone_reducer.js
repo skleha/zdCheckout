@@ -1,6 +1,6 @@
-import { RECEIVE_CURRENT_PLAN } from '../actions/plan_actions';
+import { RECEIVE_CURRENT_PLAN } from '../actions/skuone_actions';
 
-const planReducer = (oldState = {}, action) => {
+const skuOneReducer = (oldState = {}, action) => {
   Object.freeze(oldState);
   let newState = Object.assign({}, oldState);
 
@@ -14,4 +14,4 @@ const planReducer = (oldState = {}, action) => {
   }
 };
 
-export default planReducer;
+export default skuOneReducer;
