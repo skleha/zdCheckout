@@ -1,7 +1,7 @@
 
 export const fetchCurrentPlan = () => {
   return $.ajax({
-    url: '/api/skuone/current',
+    url: '/api/current',
     method: 'GET'
   });
 }

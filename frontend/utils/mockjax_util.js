@@ -24,7 +24,7 @@ let currSubscription = {
 
 
 $.mockjax({
-  url: "/api/skuone/current",
+  url: "/api/current",
   type: "GET",
   responseText: currSubscription
 });
@@ -34,6 +34,14 @@ $.mockjax({
   type: "GET",
   responseText: PLAN_NAMES
 });
+
+$.mockjax({
+  url: "/api/skuone",
+  type: "GET",
+  responseText: PLAN_NAMES
+});
+
+
 
 
 $.mockjax({

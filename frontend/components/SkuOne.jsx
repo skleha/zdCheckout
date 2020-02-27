@@ -8,6 +8,7 @@ class SkuOne extends React.Component {
     this.state = {
       selectedPlan: "Better",
       selectedSeats: 3,
+      newPlan: false,
     };
 
     this.handlePlanChange = this.handlePlanChange.bind(this);
@@ -60,8 +61,3 @@ class SkuOne extends React.Component {
 }
 
 export default SkuOne;
-
-
-// Problems
-// Can't set state when props populates
-// Select html element is one select behind
