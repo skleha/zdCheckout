@@ -1,5 +1,5 @@
 import React from "react";
-
+import { fetchPlanPricing } from '../utils/skuone_api_util';
 
 class SkuOne extends React.Component {
 
@@ -23,7 +23,7 @@ class SkuOne extends React.Component {
         this.setState({ selectedPlan: this.props.currentPlan[0],
                         selectedName: this.props.currentPlan[1],
                         selectedSeats: this.props.currentPlan[2],
-                        selectedSeats: this.props.currentPlan[3],
+                        selectedCost: this.props.currentPlan[3],
                       })
       }
     );
@@ -32,8 +32,8 @@ class SkuOne extends React.Component {
 
 
   handlePlanChange(e) {
-    this.setState({ selectedPlan: e.target.value });
-    // if state's current plan !== o
+    this.setState({ selectedName: e.target.value });
+    
   }
 
   handleSeatChange(e) {
@@ -42,7 +42,7 @@ class SkuOne extends React.Component {
 
   render() {
     
-    console.log(this.state);
+    
 
     if (!this.props.currentPlan[0]) return ("Loading...");
     const plans = this.props.availablePlans;
@@ -59,7 +59,7 @@ class SkuOne extends React.Component {
 
         <input type="number" value={this.state.selectedSeats} onChange={this.handleSeatChange}/>
 
-        <div></div>
+        <div>{this.state.selectedCost}</div>
 
         <button>Update Plan</button>
 
