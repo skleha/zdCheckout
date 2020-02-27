@@ -24,14 +24,14 @@ let currSubscription = {
 
 
 $.mockjax({
-  url: "/api/current",
+  url: "/api/skuone/current",
   type: "GET",
   responseText: currSubscription
 });
 
 
 $.mockjax({
-  url: "/api/current",
+  url: "/api/skuone/current",
   type: "PUT",
   responseDelay: 1000,
   response: function(settings) {  // settings is an object that includes keys ()
