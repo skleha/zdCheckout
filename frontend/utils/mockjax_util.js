@@ -37,23 +37,20 @@ $.mockjax({
 
 $.mockjax({
   url: "/api/preview",
-  type: "PUT",
-  response: function(settings) {
+  type: "GET",
+  response: function(request) {
     this.responseText = {
-      plan: settings.plan,
-      name: PLAN_NAMES[settings.plan],
-      seats: settings.seats,
-      cost: settings.seats * PLAN_COSTS[settings.data.plan]
+      selectedPlan: request.data.settings.selectedPlan,
+      selectedName: request.data.settings.selectedName,
+      selectedSeats: request.data.settings.selectedSeats,
+      cost: request.data.settings.selectedSeats * PLAN_COSTS[request.data.settings.selectedPlan]
     }
   }
 });
 
 
-
-
-
 $.mockjax({
-  url: "/api/skuone/current",
+  url: "/api/current",
   type: "PUT",
   responseDelay: 1000,
   response: function(settings) {  // settings is an object that includes keys ()

@@ -13,3 +13,10 @@ export const fetchAvailablePlans = () => {
   });
 }
 
+export const fetchPlanPricing = settings => {
+  return $.ajax({
+    url: "/api/preview",
+    method: "GET",
+    data: { settings }
+  });
+}
