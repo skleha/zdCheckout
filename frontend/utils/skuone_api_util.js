@@ -1,8 +1,8 @@
 
 export const fetchCurrentPlan = () => {
   return $.ajax({
-    url: '/api/current',
-    method: 'GET'
+    url: "/api/current",
+    method: "GET"
   });
 }
 
@@ -23,8 +23,8 @@ export const fetchPlanPricing = settings => {
 
 export const updateCurrentPlan = settings => {
   return $.ajax({
-    url: 'api/current',
-    method: 'PUT',
+    url: "/api/current",
+    method: "PUT",
     data: { settings }
   });
 }
