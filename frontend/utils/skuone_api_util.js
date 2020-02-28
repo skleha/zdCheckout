@@ -21,3 +21,10 @@ export const fetchPlanPricing = settings => {
   });
 }
 
+export const updateCurrentPlan = settings => {
+  return $.ajax({
+    url: 'api/current',
+    method: 'PUT',
+    data: { settings }
+  });
+}

@@ -48,11 +48,9 @@ $.mockjax({
   }
 });
 
-
 $.mockjax({
   url: "/api/current",
   type: "PUT",
-  responseDelay: 1000,
   response: function(request) { 
     
     let newData = {
