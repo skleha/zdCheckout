@@ -6,8 +6,8 @@ class SkuOne extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedPlan: "better",
-      selectedName: "Better",
+      selectedPlan: "no plan",
+      selectedName: "no plan",
       selectedSeats: 0,
       selectedCost: 0,
       newPlan: false,
@@ -20,11 +20,12 @@ class SkuOne extends React.Component {
   componentDidMount() {
     this.props.fetchCurrentPlan()
       .then(res => {
-        this.setState({ selectedPlan: this.props.currentPlan[0],
-                        selectedName: this.props.currentPlan[1],
-                        selectedSeats: this.props.currentPlan[2],
-                        selectedCost: this.props.currentPlan[3],
-                      })
+        this.setState({
+          selectedPlan: this.props.currentPlan["plan"],
+          selectedName: this.props.currentPlan["name"],
+          selectedSeats: this.props.currentPlan["seats"],
+          selectedCost: this.props.currentPlan["cost"]
+        });
       }
     );
     this.props.fetchAvailablePlans();
@@ -34,12 +35,22 @@ class SkuOne extends React.Component {
     return plansAndNames[plan];
   }
 
-  updateCost() {
-    
+  updateCost() {  
     fetchPlanPricing(this.state)
         .then(res => {
           this.setState(res);
         })
+  }
+
+  haveNewPlan() {
+    const currentPlan = this.props.currentPlan["plan"];
+    const currentSeats = this.props.currentPlan["seats"];
+    
+    if (this.state.selectedPlan !== currentPlan || Number(this.state.selectedSeats) !== currentSeats) {
+      this.setState({ newPlan: true});
+    } else {
+      this.setState({ newPlan: false });
+    }
   }
 
   handlePlanChange(e) {
@@ -48,22 +59,26 @@ class SkuOne extends React.Component {
 
     this.setState({ selectedPlan: plan,
                     selectedName: planName,
-                  }, this.updateCost);
-    
+                  }, () => {
+                    this.updateCost();
+                    this.haveNewPlan();
+                  });
+  
   }
 
   handleSeatChange(e) {
     const seats = e.target.value;
-    this.setState({ selectedSeats: seats }, this.updateCost);
+    this.setState({ selectedSeats: seats }, () => {
+      this.updateCost();
+      this.haveNewPlan();
+    });
   }
 
   render() {
 
-    console.log(this.state);
-
-    if (!this.props.currentPlan[0]) return ("Loading...");
-    
+    if (!this.props.currentPlan) return ("Loading...");    
     const plans = Object.keys(this.props.plansAndNames);
+    let buttonStatus = this.state.newPlan
     
     return (
       <div>
@@ -79,7 +94,7 @@ class SkuOne extends React.Component {
 
         <div>{this.state.selectedCost}</div>
 
-        <button>Update Plan</button>
+        <button disabled={!this.state.newPlan}>Update Plan</button>
 
       </div>
     );

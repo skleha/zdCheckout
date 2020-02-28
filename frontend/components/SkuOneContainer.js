@@ -4,7 +4,7 @@ import { fetchCurrentPlan, fetchAvailablePlans } from '../actions/skuone_actions
 
 
 const mapStateToProps = state => ({
-  currentPlan: Object.values(state.skuone.currentPlan),
+  currentPlan: state.skuone.currentPlan,
   plansAndNames: state.skuone.availablePlans,
 });
 
