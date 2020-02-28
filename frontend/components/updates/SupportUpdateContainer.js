@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { withRouter } from "react-router";
 import SupportUpdate from './SupportUpdate';
 import { fetchCurrentPlan, fetchAvailablePlans, updateCurrentPlan } from '../../actions/support_actions';
 
@@ -14,4 +15,4 @@ const mapDispatchToProps = dispatch => ({
   updateCurrentPlan: plan => dispatch(updateCurrentPlan(plan)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(SupportUpdate);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SupportUpdate));

@@ -1,7 +1,7 @@
 import React from "react";
 import { fetchPlanPricing } from '../../utils/support_api_util';
 
-class Support extends React.Component {
+class SupportUpdate extends React.Component {
 
   constructor(props) {
     super(props);
@@ -76,7 +76,7 @@ class Support extends React.Component {
 
   handleClick(e) {
     this.props.updateCurrentPlan(this.state);
-    this.props.history.push('/confirm/');
+    this.props.history.push('/confirm');
   }
 
 
@@ -109,4 +109,4 @@ class Support extends React.Component {
 
 }
 
-export default Support;
+export default SupportUpdate;
