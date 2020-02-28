@@ -1,6 +1,20 @@
 
 .confirm-grid-container {
   display: grid;
-  grid-template-columns: 110px 70px;
-  grid-row-gap: 10px;
+  grid-template-columns: 120px 90px 90px;
+  grid-row-gap: 15px;
+}
+
+.confirm-grid-header {
+  justify-self: center;
+}
+
+.confirm-grid-data {
+  justify-self: center;
+}
+
+.confirm-grid-data.changed {
+  color: #46AABC;
+  font-weight: bold;
+  
 }
