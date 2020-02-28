@@ -14,6 +14,8 @@ class Confirm extends React.Component {
   render() {
     const previous = this.props.previousPlan;
     const updated = this.props.currentPlan;
+    if (!previous) return ("Loading...")
+
 
     return (
       <div>
