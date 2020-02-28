@@ -1,4 +1,58 @@
 
+.update {
+  display: flex;
+  align-items: center;
+  margin: 10px;
+  padding: 20px;
+  background-color: lightgrey;
+
+}
+
+.update-product {
+  height: 70px;
+  width: 110px;
+  border-right: 1px solid darkgrey;
+}
+
+.update-grid {
+  display: grid;
+  grid-template-columns: 80px 80px 30px;
+  grid-row-gap: 5px;
+  grid-column-gap: 10px;
+  margin: 0px 10px;
+}
+
+.update-header {
+  justify-self: center;
+  font-size: 14px;
+}
+
+.update-select {
+  justify-self: center;
+  font-size: 14px;
+  width: 75px;
+}
+
+.update-input {
+  justify-self: center;
+  width: 30px;
+}
+
+.update-cost {
+  justify-self: center;
+  font-size: 14px;
+}
+
+.update-button {
+  font-size: 13px;
+  background-color: #164D4C;
+  color: white;
+  height: 25px;
+  border-radius: 5px;
+}
+
+
+
 .confirm {
   padding: 20px;
 }

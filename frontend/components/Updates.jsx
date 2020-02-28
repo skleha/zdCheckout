@@ -5,6 +5,7 @@ const Updates = () => {
 
   return (
   <div>
+    <div>Update Subscriptions</div>
     <SupportUpdateContainer />
   </div>
   )

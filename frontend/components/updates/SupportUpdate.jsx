@@ -86,21 +86,43 @@ class SupportUpdate extends React.Component {
     const plans = Object.keys(this.props.plansAndNames);
   
     return (
-      <div>
-        <div>Support Plan Options</div>
+      <div className="update">
+        <div className="update-product">Support Plan:</div>
 
-        <select id="plan-input" value={this.state.selectedPlan} onChange={this.handlePlanChange}>
-          {plans.map((plan, idx) => (
-            <option key={idx} value={plan}>{this.getPlanName(this.props.plansAndNames, plan)}</option>
-          ))}
-        </select>
+        <div className="update-grid">
+          <div className="update-header">Plan</div>
+          <div className="update-header">Seats</div>
+          <div className="update-header">Cost</div>
 
-        <input type="number" value={this.state.selectedSeats} onChange={this.handleSeatChange}/>
+          <select
+            className="update-select"
+            value={this.state.selectedPlan}
+            onChange={this.handlePlanChange}
+          >
+            {plans.map((plan, idx) => (
+              <option key={idx} value={plan}>
+                {this.getPlanName(this.props.plansAndNames, plan)}
+              </option>
+            ))}
+          </select>
 
-        <div>{this.state.selectedCost}</div>
+          <input
+            type="number"
+            className="update-input"
+            value={this.state.selectedSeats}
+            onChange={this.handleSeatChange}
+          />
 
-        <button disabled={!this.state.newPlan} onClick={this.handleClick}>Update Plan</button>
+          <div className="update-cost">{this.state.selectedCost}</div>
+        </div>
 
+        <button
+          className="update-button"
+          disabled={!this.state.newPlan}
+          onClick={this.handleClick}
+        >
+          Update Plan
+        </button>
       </div>
     );
 
