@@ -1,9 +1,12 @@
 import React from 'react';
+import SupportConfirmContainer from './confirms/SupportConfirmContainer';
 
 const Confirms = () => {
 
   return (
-    <div>You have the confirm shell</div>
+    <div>
+      <SupportConfirmContainer />
+    </div>
   )
 
 }

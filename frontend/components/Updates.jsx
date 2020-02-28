@@ -1,7 +1,15 @@
 import React from "react";
+import SupportUpdateContainer from './updates/SupportUpdateContainer';
 
 const Updates = () => {
-  return <div>You have the updates shell</div>;
+
+  return (
+  <div>
+    <SupportUpdateContainer />
+
+
+  </div>
+  )
 };
 
 export default Updates;
