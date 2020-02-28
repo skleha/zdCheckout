@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
-import Support from './Support';
-import { fetchCurrentPlan, fetchAvailablePlans, updateCurrentPlan } from '../actions/support_actions';
+import Support from './SupportUpdate';
+import { fetchCurrentPlan, fetchAvailablePlans, updateCurrentPlan } from '../../actions/support_actions';
 
 
 const mapStateToProps = state => ({

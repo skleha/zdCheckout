@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
-import SupportContainer from './SupportContainer';
+import SupportContainer from './updates/SupportUpdateContainer';
 import ConfirmContainer from './ConfirmContainer';
 
 const App = () => (

@@ -1,5 +1,5 @@
 import React from "react";
-import { fetchPlanPricing } from '../utils/support_api_util';
+import { fetchPlanPricing } from '../../utils/support_api_util';
 
 class Support extends React.Component {
 
