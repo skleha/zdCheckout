@@ -1,10 +1,9 @@
 import React from 'react';
 import SkuOneContainer from './SkuOneContainer';
+import { Route } from 'react-router-dom';
 
 const App = () => (
-  //Frontend routes here
-  <SkuOneContainer />
-
+  <Route exact path="/update" component={SkuOneContainer} />
 )
 
 export default App;
