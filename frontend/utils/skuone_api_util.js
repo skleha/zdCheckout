@@ -6,6 +6,13 @@ export const fetchCurrentPlan = () => {
   });
 }
 
+export const fetchPreviousPlan = () => {
+  return $.ajax({
+    url: "/api/current",
+    type: "GET"
+  });
+}
+
 export const fetchAvailablePlans = () => {
   return $.ajax({
     url: "/api/skuone/plans",
@@ -24,7 +31,7 @@ export const fetchPlanPricing = settings => {
 export const updateCurrentPlan = settings => {
   return $.ajax({
     url: "/api/current/update",
-    type: 'PATCH',
+    type: "PATCH",
     data: { settings }
   });
 }
