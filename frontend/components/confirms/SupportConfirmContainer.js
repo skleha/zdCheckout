@@ -1,20 +1,14 @@
 import { connect } from "react-redux";
 import SupportConfirm from "./SupportConfirm";
-import {
-  fetchCurrentPlan,
-  fetchAvailablePlans,
-  updateCurrentPlan
-} from "../../actions/support_actions";
+import { fetchPreviousPlan } from "../../actions/support_actions";
 
 const mapStateToProps = state => ({
   currentPlan: state.support.currentPlan,
-  plansAndNames: state.support.availablePlans
+  previousPlan: state.support.previousPlan
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchCurrentPlan: () => dispatch(fetchCurrentPlan()),
-  fetchAvailablePlans: () => dispatch(fetchAvailablePlans()),
-  updateCurrentPlan: plan => dispatch(updateCurrentPlan(plan))
+  fetchPreviousPlan: () => dispatch(fetchPreviousPlan())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SupportConfirm);

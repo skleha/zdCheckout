@@ -6,8 +6,6 @@ const Updates = () => {
   return (
   <div>
     <SupportUpdateContainer />
-
-
   </div>
   )
 };
