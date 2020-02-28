@@ -29,7 +29,7 @@ $.mockjax({
 });
 
 $.mockjax({
-  url: "api/previous",
+  url: "/api/previous",
   type: "GET",
   responseText: prevSubscription
 });

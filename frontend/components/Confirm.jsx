@@ -6,10 +6,17 @@ class Confirm extends React.Component {
     super(props);
   }
 
+  componentDidMount() {
+    this.props.fetchPreviousPlan();
+  }
+
+
   render() {
+    const curr = JSON.stringify(this.props.currentPlan);
+    const prev = JSON.stringify(this.props.previousPlan);
 
     return (
-      <div>You've got the confirm page</div>
+      <div>{curr}</div>
     )
   }
 
