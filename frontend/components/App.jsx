@@ -1,12 +1,12 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
-import SupportContainer from './updates/SupportUpdateContainer';
-import ConfirmContainer from './ConfirmContainer';
+import Updates from './Updates';
+import Confirms from './Confirms';
 
 const App = () => (
   <div>
-    <Route exact path="/update" component={SupportContainer} />
-    <Route exact path="/confirm" component={ConfirmContainer} />
+    <Route exact path="/update" component={Updates} />
+    <Route exact path="/confirm" component={Confirms} />
   </div>
 );
 
