@@ -1,4 +1,5 @@
 import { connect } from "react-redux";
+import { withRouter } from "react-router";
 import SupportConfirm from "./SupportConfirm";
 import { fetchPreviousPlan } from "../../actions/support_actions";
 
@@ -11,4 +12,4 @@ const mapDispatchToProps = dispatch => ({
   fetchPreviousPlan: () => dispatch(fetchPreviousPlan())
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(SupportConfirm);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SupportConfirm));
