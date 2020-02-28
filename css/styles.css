@@ -1,0 +1,6 @@
+
+.confirm-grid-container {
+  display: grid;
+  grid-template-columns: 110px 70px;
+  grid-row-gap: 10px;
+}

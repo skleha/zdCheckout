@@ -12,12 +12,24 @@ class Confirm extends React.Component {
 
 
   render() {
-    const curr = JSON.stringify(this.props.currentPlan);
-    const prev = JSON.stringify(this.props.previousPlan);
+    const previous = this.props.previousPlan;
+    const updated = this.props.currentPlan;
 
     return (
-      <div>{prev}</div>
-    )
+      <div>
+        <div className="confirm-grid-container">
+          <div>Plan Name</div>
+          <div>{previous.name}</div>
+          <div>{updated.name}</div>
+          <div>Seats</div>
+          <div>{updated.seats}</div>
+          <div>{previous.seats}</div>
+          <div>Cost</div>
+          <div>{updated.cost}</div>
+          <div>{previous.cost}</div>
+        </div>
+      </div>
+    );
   }
 
 }
