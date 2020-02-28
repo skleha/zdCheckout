@@ -10,9 +10,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const store = configureStore();
   
   // Functions defined on the window
-  window.fetchCurrentPlan = fetchCurrentPlan;
-  window.fetchAvailablePlans = fetchAvailablePlans;
-  window.fetchPlanPricing = fetchPlanPricing;
   window.updateCurrentPlan = updateCurrentPlan;
   
   window.getState = store.getState;

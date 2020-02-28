@@ -22,7 +22,6 @@ let currSubscription = {
   cost: 50
 };
 
-
 $.mockjax({
   url: "/api/current",
   type: "GET",
@@ -49,10 +48,9 @@ $.mockjax({
 });
 
 $.mockjax({
-  url: "/api/current",
-  type: "PUT",
-  response: function(request) { 
-    
+  url: "/api/current/update",
+  type: 'PATCH',
+  response: function(request) {
     let newData = {
       plan: request.data.settings.selectedPlan,
       name: request.data.settings.selectedName,

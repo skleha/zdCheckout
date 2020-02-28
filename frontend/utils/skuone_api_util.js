@@ -2,29 +2,29 @@
 export const fetchCurrentPlan = () => {
   return $.ajax({
     url: "/api/current",
-    method: "GET"
+    type: "GET"
   });
 }
 
 export const fetchAvailablePlans = () => {
   return $.ajax({
     url: "/api/skuone/plans",
-    method: "GET"
+    type: "GET"
   });
 }
 
 export const fetchPlanPricing = settings => {
   return $.ajax({
     url: "/api/preview",
-    method: "GET",
+    type: "GET",
     data: { settings }
   });
 }
 
 export const updateCurrentPlan = settings => {
   return $.ajax({
-    url: "/api/current",
-    method: "PUT",
+    url: "/api/current/update",
+    type: 'PATCH',
     data: { settings }
   });
 }
