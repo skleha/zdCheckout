@@ -86,7 +86,7 @@ class SupportUpdate extends React.Component {
     const plans = Object.keys(this.props.plansAndNames);
   
     return (
-      <div className="update">
+      <div className="update-component">
         <div className="update-product">Support Plan:</div>
 
         <div className="update-grid">
