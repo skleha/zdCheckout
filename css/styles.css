@@ -1,25 +1,32 @@
 
+
+
+
+
+/* UPDATE COMPONENT */
+
 .update {
   display: flex;
   align-items: center;
   margin: 10px;
   padding: 20px;
   background-color: lightgrey;
-
+  border-radius: 5px;
 }
 
 .update-product {
-  height: 70px;
+  height: 60px;
   width: 110px;
+  padding-top: 35px;
   border-right: 1px solid darkgrey;
 }
 
 .update-grid {
   display: grid;
-  grid-template-columns: 80px 80px 30px;
-  grid-row-gap: 5px;
+  grid-template-columns: 80px 80px 40px;
+  grid-row-gap: 8px;
   grid-column-gap: 10px;
-  margin: 0px 10px;
+  margin: 0px 20px;
 }
 
 .update-header {
@@ -35,23 +42,33 @@
 
 .update-input {
   justify-self: center;
-  width: 30px;
+  width: 50px;
+  font-size: 14px;
+  text-align: center;
 }
 
 .update-cost {
   justify-self: center;
+  align-self: center;
   font-size: 14px;
+
 }
 
-.update-button {
-  font-size: 13px;
+button {
+  font-size: 14px;
   background-color: #164D4C;
   color: white;
-  height: 25px;
+  padding: 7px 15px;
   border-radius: 5px;
+  cursor: pointer;
+}
+
+button:disabled {
+  color: darkgrey;
 }
 
 
+/* CONFIRM COMPONENT */
 
 .confirm {
   padding: 20px;
