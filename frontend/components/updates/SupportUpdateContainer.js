@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import Support from './SupportUpdate';
+import SupportUpdate from './SupportUpdate';
 import { fetchCurrentPlan, fetchAvailablePlans, updateCurrentPlan } from '../../actions/support_actions';
 
 
@@ -14,4 +14,4 @@ const mapDispatchToProps = dispatch => ({
   updateCurrentPlan: plan => dispatch(updateCurrentPlan(plan)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Support);
+export default connect(mapStateToProps, mapDispatchToProps)(SupportUpdate);

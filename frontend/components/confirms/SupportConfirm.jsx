@@ -9,6 +9,10 @@ class SupportConfirm extends React.Component {
     this.props.fetchPreviousPlan();
   }
 
+  handleClick(e) {
+    this.props.history.push('/update');
+  }
+
   render() {
     if (!this.props.previousPlan) return "Loading...";
     const previous = this.props.previousPlan;
@@ -33,10 +37,10 @@ class SupportConfirm extends React.Component {
           <div className={`confirm-grid-data ${seatChange}`}>{updated.seats}</div>
           <div className="confirm-grid-title">Cost</div>
           <div className="confirm-grid-data">{previous.cost}</div>
-          <div className={`confirm-grid-data ${costChange}`}>
-            {updated.cost}
-          </div>
+          <div className={`confirm-grid-data ${costChange}`}>{updated.cost}</div>
         </div>
+        <button onClick={this.handleClick} >Back to Updates</button>
+
       </div>
     );
   }
