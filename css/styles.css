@@ -1,12 +1,24 @@
 
+.confirm {
+  padding: 20px;
+}
+
+.confirm-title {
+  margin-bottom: 25px;
+  text-align: center;
+  font-size: 18px;
+}
+
 .confirm-grid-container {
   display: grid;
   grid-template-columns: 120px 200px 200px;
   grid-row-gap: 15px;
+  font-size: 16px;
 }
 
 .confirm-grid-header {
   justify-self: center;
+  border-bottom: 1px solid black;
 }
 
 .confirm-grid-data {

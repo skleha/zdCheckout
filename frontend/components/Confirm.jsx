@@ -21,8 +21,9 @@ class Confirm extends React.Component {
 
     return (
       <div className="confirm">
+        <div className="confirm-title">Support Plan Updated</div>
         <div className="confirm-grid-container">
-          <div></div>
+          <div className="confirm-grid-header"></div>
           <div className="confirm-grid-header">Previous Subscription</div>
           <div className="confirm-grid-header">Updated Subscription</div>
           <div className="confirm-grid-title">Plan Name</div>
