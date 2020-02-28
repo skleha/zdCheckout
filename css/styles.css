@@ -1,7 +1,7 @@
 
 .confirm-grid-container {
   display: grid;
-  grid-template-columns: 120px 90px 90px;
+  grid-template-columns: 120px 200px 200px;
   grid-row-gap: 15px;
 }
 
@@ -15,6 +15,5 @@
 
 .confirm-grid-data.changed {
   color: royalblue;
-  font-weight: bold;
-  
+  font-weight: bold; 
 }

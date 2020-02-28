@@ -19,13 +19,12 @@ class Confirm extends React.Component {
     const seatChange = (previous.seats === updated.seats) ? "" : "changed";
     const costChange = (previous.cost === updated.cost) ? "" : "changed";
 
-
     return (
-      <div>
+      <div className="confirm">
         <div className="confirm-grid-container">
           <div></div>
-          <div className="confirm-grid-header">Previous</div>
-          <div className="confirm-grid-header">Updated</div>
+          <div className="confirm-grid-header">Previous Subscription</div>
+          <div className="confirm-grid-header">Updated Subscription</div>
           <div className="confirm-grid-title">Plan Name</div>
           <div className="confirm-grid-data">{previous.name}</div>
           <div className={`confirm-grid-data ${planChange}`}>{updated.name}</div>
