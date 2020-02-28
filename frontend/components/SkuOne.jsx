@@ -15,6 +15,7 @@ class SkuOne extends React.Component {
 
     this.handlePlanChange = this.handlePlanChange.bind(this);
     this.handleSeatChange = this.handleSeatChange.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   componentDidMount() {
@@ -63,7 +64,6 @@ class SkuOne extends React.Component {
                     this.updateCost();
                     this.haveNewPlan();
                   });
-  
   }
 
   handleSeatChange(e) {
@@ -74,12 +74,16 @@ class SkuOne extends React.Component {
     });
   }
 
+  handleClick(e) {
+    
+  }
+
+
   render() {
 
     if (!this.props.currentPlan) return ("Loading...");    
     const plans = Object.keys(this.props.plansAndNames);
-    let buttonStatus = this.state.newPlan
-    
+  
     return (
       <div>
         <div>Support Plan Options</div>
@@ -94,7 +98,7 @@ class SkuOne extends React.Component {
 
         <div>{this.state.selectedCost}</div>
 
-        <button disabled={!this.state.newPlan}>Update Plan</button>
+        <button disabled={!this.state.newPlan} onClick={this.handleClick}>Update Plan</button>
 
       </div>
     );

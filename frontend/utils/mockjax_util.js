@@ -53,13 +53,13 @@ $.mockjax({
   url: "/api/current",
   type: "PUT",
   responseDelay: 1000,
-  response: function(settings) {  // settings is an object that includes keys ()
+  response: function(request) { 
     
     let newData = {
-      plan: settings.data.plan,
-      name: PLAN_NAMES[settings.data.plan],
-      seats: settings.data.seats,
-      cost: settings.data.seats * PLAN_COSTS[settings.data.plan]
+      plan: request.data.settings.selectedPlan,
+      name: request.data.settings.selectedName,
+      seats: request.data.settings.selectedSeats,
+      cost: request.data.settings.selectedCost
     };
 
     prevSubscription = currSubscription;

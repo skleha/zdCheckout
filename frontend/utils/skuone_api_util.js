@@ -20,3 +20,4 @@ export const fetchPlanPricing = settings => {
     data: { settings }
   });
 }
+
