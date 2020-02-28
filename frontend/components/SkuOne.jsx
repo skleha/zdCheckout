@@ -75,7 +75,8 @@ class SkuOne extends React.Component {
   }
 
   handleClick(e) {
-    
+    this.props.updateCurrentPlan(this.state);
+    this.props.history.push('/confirm/');
   }
 
 
