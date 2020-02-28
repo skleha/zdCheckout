@@ -16,7 +16,7 @@ class Confirm extends React.Component {
     const prev = JSON.stringify(this.props.previousPlan);
 
     return (
-      <div>{curr}</div>
+      <div>{prev}</div>
     )
   }
 

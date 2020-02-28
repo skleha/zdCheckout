@@ -1,4 +1,4 @@
-import { RECEIVE_CURRENT_PLAN, RECEIVE_AVAILABLE_PLANS } from '../actions/support_actions';
+import { RECEIVE_CURRENT_PLAN, RECEIVE_PREVIOUS_PLAN, RECEIVE_AVAILABLE_PLANS } from '../actions/support_actions';
 
 const SupportReducer = (oldState = {currentPlan: [], availablePlans: []}, action) => {
   Object.freeze(oldState);
@@ -10,7 +10,7 @@ const SupportReducer = (oldState = {currentPlan: [], availablePlans: []}, action
       newState["currentPlan"] = action.currentPlan;
       return newState;
 
-    case RECEIVE_CURRENT_PLAN:
+    case RECEIVE_PREVIOUS_PLAN:
       newState["previousPlan"] = action.previousPlan;
       return newState;
 

@@ -34,7 +34,7 @@ export const fetchCurrentPlan = () => dispatch => (
 );
 
 export const fetchPreviousPlan = () => dispatch => (
-  SupportAPIUTIL.fetchPreviousPlan()
+  SupportAPIUtil.fetchPreviousPlan()
     .then(plan => dispatch(receivePrevPlan(plan)))
 )
 
