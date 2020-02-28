@@ -34,28 +34,31 @@ class SkuOne extends React.Component {
     return plansAndNames[plan];
   }
 
+  updateCost() {
+    
+    fetchPlanPricing(this.state)
+        .then(res => {
+          this.setState(res);
+        })
+  }
+
   handlePlanChange(e) {
     const plan = e.target.value;
     const planName = this.getPlanName(this.props.plansAndNames, plan);
 
     this.setState({ selectedPlan: plan,
-                    selectedName:  planName,
-                  });
-    
-    fetchPlanPricing(this.state)
-      .then(res => {
-        this.setState({res})
-      })
+                    selectedName: planName,
+                  }, this.updateCost);
     
   }
 
   handleSeatChange(e) {
-    this.setState({ selectedSeats: e.target.value });
-
+    const seats = e.target.value;
+    this.setState({ selectedSeats: seats }, this.updateCost);
   }
 
   render() {
-    
+
     console.log(this.state);
 
     if (!this.props.currentPlan[0]) return ("Loading...");
