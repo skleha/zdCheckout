@@ -7,7 +7,7 @@ const Confirms = () => {
     <div>
       <SupportConfirmContainer />
     </div>
-  )
+  );
 
 }
 
