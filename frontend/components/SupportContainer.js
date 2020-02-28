@@ -1,11 +1,11 @@
 import { connect } from 'react-redux';
-import SkuOne from './SkuOne';
-import { fetchCurrentPlan, fetchAvailablePlans, updateCurrentPlan } from '../actions/skuone_actions';
+import Support from './Support';
+import { fetchCurrentPlan, fetchAvailablePlans, updateCurrentPlan } from '../actions/support_actions';
 
 
 const mapStateToProps = state => ({
-  currentPlan: state.skuone.currentPlan,
-  plansAndNames: state.skuone.availablePlans,
+  currentPlan: state.support.currentPlan,
+  plansAndNames: state.support.availablePlans,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -14,4 +14,4 @@ const mapDispatchToProps = dispatch => ({
   updateCurrentPlan: plan => dispatch(updateCurrentPlan(plan)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(SkuOne);
+export default connect(mapStateToProps, mapDispatchToProps)(Support);

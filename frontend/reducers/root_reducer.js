@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
-import skuOneReducer from './skuone_reducer';
+import SupportReducer from './support_reducer';
 
 const rootReducer = combineReducers({
-  skuone: skuOneReducer,
+  support: SupportReducer,
 
 });
 

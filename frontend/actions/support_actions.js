@@ -1,4 +1,4 @@
-import * as SkuOneAPIUtil from '../utils/skuone_api_util';
+import * as SupportAPIUtil from '../utils/support_api_util';
 
 
 export const RECEIVE_CURRENT_PLAN = "RECEIVE_CURRENT_PLAN";
@@ -29,21 +29,21 @@ const receivePrevPlan = previousPlan => {
 
 
 export const fetchCurrentPlan = () => dispatch => (
-  SkuOneAPIUtil.fetchCurrentPlan()
+  SupportAPIUtil.fetchCurrentPlan()
     .then(plan => dispatch(receiveCurrPlan(plan)))
 );
 
 export const fetchPreviousPlan = () => dispatch => (
-  SkuOneAPIUTIL.fetchPreviousPlan()
+  SupportAPIUTIL.fetchPreviousPlan()
     .then(plan => dispatch(receivePrevPlan(plan)))
 )
 
 export const fetchAvailablePlans = () => dispatch => (
-  SkuOneAPIUtil.fetchAvailablePlans()
+  SupportAPIUtil.fetchAvailablePlans()
     .then(plans => dispatch(receiveAvailPlans(plans)))
 );
 
 export const updateCurrentPlan = plan => dispatch => (
-  SkuOneAPIUtil.updateCurrentPlan(plan)
+  SupportAPIUtil.updateCurrentPlan(plan)
     .then(plan => dispatch(receiveCurrPlan(plan)))
 );

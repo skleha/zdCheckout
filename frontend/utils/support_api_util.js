@@ -15,7 +15,7 @@ export const fetchPreviousPlan = () => {
 
 export const fetchAvailablePlans = () => {
   return $.ajax({
-    url: "/api/skuone/plans",
+    url: "/api/support/plans",
     type: "GET"
   });
 }

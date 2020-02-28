@@ -1,7 +1,7 @@
 import React from "react";
-import { fetchPlanPricing } from '../utils/skuone_api_util';
+import { fetchPlanPricing } from '../utils/support_api_util';
 
-class SkuOne extends React.Component {
+class Support extends React.Component {
 
   constructor(props) {
     super(props);
@@ -109,4 +109,4 @@ class SkuOne extends React.Component {
 
 }
 
-export default SkuOne;
+export default Support;

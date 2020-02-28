@@ -1,11 +1,11 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
-import SkuOneContainer from './SkuOneContainer';
+import SupportContainer from './SupportContainer';
 import ConfirmContainer from './ConfirmContainer';
 
 const App = () => (
   <div>
-    <Route exact path="/update" component={SkuOneContainer} />
+    <Route exact path="/update" component={SupportContainer} />
     <Route exact path="/confirm" component={ConfirmContainer} />
   </div>
 );

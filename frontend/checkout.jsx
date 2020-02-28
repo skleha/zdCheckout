@@ -2,8 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom";
 import configureStore from './store/store';
 import Root from "./components/Root";
-import {  fetchAvailablePlans } from "./actions/skuone_actions";
-import { fetchCurrentPlan, fetchPlanPricing, updateCurrentPlan } from "./utils/skuone_api_util";
+import {  fetchAvailablePlans } from "./actions/support_actions";
+import { fetchCurrentPlan, fetchPlanPricing, updateCurrentPlan } from "./utils/support_api_util";
 
 document.addEventListener("DOMContentLoaded", () => {
   

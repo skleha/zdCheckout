@@ -35,7 +35,7 @@ $.mockjax({
 });
 
 $.mockjax({
-  url: "/api/skuone/plans",
+  url: "/api/support/plans",
   type: "GET",
   responseText: PLAN_NAMES
 });
