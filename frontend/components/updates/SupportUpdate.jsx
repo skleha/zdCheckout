@@ -21,6 +21,8 @@ class SupportUpdate extends React.Component {
   componentDidMount() {
     this.props.fetchCurrentPlan()
       .then(res => {
+        const showMe = JSON.stringify(res);
+        console.log(showMe);
         this.setState({
           selectedPlan: this.props.currentPlan["plan"],
           selectedName: this.props.currentPlan["name"],
