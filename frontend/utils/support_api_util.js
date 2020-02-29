@@ -26,11 +26,11 @@ export const fetchAvailablePlans = async () => {
   });
 }
 
-export const fetchPlanPricing = async settings => {
+export const fetchPlanPricing = async (seats, plan) => {
   return await $.ajax({
     url: "/api/preview",
     type: "GET",
-    data: { settings }
+    data: { seats, plan }
   });
 }
 

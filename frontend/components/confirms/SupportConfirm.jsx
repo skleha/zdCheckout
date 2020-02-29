@@ -1,14 +1,17 @@
 import React from "react";
+import * as classNames from 'classnames'
 
 class SupportConfirm extends React.Component {
   constructor(props) {
     super(props);
+    this.state = { isLoading: true}
 
     this.handleClick = this.handleClick.bind(this);
   }
 
-  componentDidMount() {
-    this.props.fetchPreviousPlan();
+  async componentDidMount() {
+    await this.props.fetchPreviousPlan();
+    this.setState({ isLoading: false});
   }
 
   handleClick(e) {
@@ -16,14 +19,20 @@ class SupportConfirm extends React.Component {
   }
 
   render() {
-    if (!this.props.previousPlan) return "Loading...";
+    if (this.state.isLoading) return "Loading...";
     const previous = this.props.previousPlan;
     const updated = this.props.currentPlan;
 
-    const planChange = previous.name === updated.name ? "" : "changed";
-    const seatChange = previous.seats === updated.seats ? "" : "changed";
-    const costChange = previous.cost === updated.cost ? "" : "changed";
-
+    const planChangeClassName = classNames("confirm-grid-data", {
+      changed: previous.name === updated.name
+    });
+    const seatChangeClassName = classNames("confirm-grid-data", {
+      changed: previous.seats === updated.seats
+    });
+    const costChangeClassName = classNames("confirm-grid-data", {
+      changed: previous.cost === updated.cost
+    });
+    
     return (
       <div className="confirm-component">
         <div className="confirm-title"></div>
@@ -33,19 +42,13 @@ class SupportConfirm extends React.Component {
           <div className="confirm-grid-header">Updated Subscription</div>
           <div className="confirm-grid-title">Plan Name</div>
           <div className="confirm-grid-data">{previous.name}</div>
-          <div className={`confirm-grid-data ${planChange}`}>
-            {updated.name}
-          </div>
+          <div className={planChangeClassName}>{updated.name}</div>
           <div className="confirm-grid-title">Seats</div>
           <div className="confirm-grid-data">{previous.seats}</div>
-          <div className={`confirm-grid-data ${seatChange}`}>
-            {updated.seats}
-          </div>
+          <div className={seatChangeClassName}>{updated.seats}</div>
           <div className="confirm-grid-title">Cost</div>
           <div className="confirm-grid-data">{previous.cost}</div>
-          <div className={`confirm-grid-data ${costChange}`}>
-            {updated.cost}
-          </div>
+          <div className={costChangeClassName}>{updated.cost}</div>
         </div>
         <button className="confirm-back-button" onClick={this.handleClick}>
           Back to Updates

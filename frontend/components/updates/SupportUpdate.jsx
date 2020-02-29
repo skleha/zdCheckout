@@ -1,8 +1,8 @@
 import React from "react";
 import { fetchPlanPricing } from '../../utils/support_api_util';
+import * as supportUpdateHelper from '../../helpers/supportUpdateHelper';
 
 class SupportUpdate extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -10,25 +10,23 @@ class SupportUpdate extends React.Component {
       selectedName: "no plan",
       selectedSeats: 0,
       selectedCost: 0,
-      newPlan: false,
+      updateButtonEnabled: false
     };
 
     this.handlePlanChange = this.handlePlanChange.bind(this);
     this.handleSeatChange = this.handleSeatChange.bind(this);
-    this.handleClick = this.handleClick.bind(this);
+    this.handleUpdatePlanClick = this.handleUpdatePlanClick.bind(this);
   }
 
   componentDidMount() {
-    this.props.fetchCurrentPlan()
-      .then(res => {
-        this.setState({
-          selectedPlan: this.props.currentPlan["plan"],
-          selectedName: this.props.currentPlan["name"],
-          selectedSeats: this.props.currentPlan["seats"],
-          selectedCost: this.props.currentPlan["cost"]
-        });
-      }
-    );
+    this.props.fetchCurrentPlan().then(res => {
+      this.setState({
+        selectedPlan: this.props.currentPlan["plan"],
+        selectedName: this.props.currentPlan["name"],
+        selectedSeats: this.props.currentPlan["seats"],
+        selectedCost: this.props.currentPlan["cost"]
+      });
+    });
     this.props.fetchAvailablePlans();
   }
 
@@ -36,54 +34,63 @@ class SupportUpdate extends React.Component {
     return plansAndNames[plan];
   }
 
-  updateCost() {  
-    fetchPlanPricing(this.state)
-        .then(res => {
-          this.setState(res);
-        })
-  }
-
-  haveNewPlan() {
-    const currentPlan = this.props.currentPlan["plan"];
-    const currentSeats = this.props.currentPlan["seats"];
-    
-    if (this.state.selectedPlan !== currentPlan || Number(this.state.selectedSeats) !== currentSeats) {
-      this.setState({ newPlan: true});
-    } else {
-      this.setState({ newPlan: false });
-    }
-  }
-
   handlePlanChange(e) {
-    const plan = e.target.value;
-    const planName = this.getPlanName(this.props.plansAndNames, plan);
-
-    this.setState({ selectedPlan: plan,
-                    selectedName: planName,
-                  }, () => {
-                    this.updateCost();
-                    this.haveNewPlan();
-                  });
+    const selectedPlan = e.target.value;
+    const selectedName = this.getPlanName(
+      this.props.plansAndNames,
+      selectedPlan
+    );
+    this.handleSubscriptionChange(
+      selectedPlan,
+      selectedName,
+      this.state.selectedSeats
+    );
   }
 
   handleSeatChange(e) {
     const seats = e.target.value;
-    this.setState({ selectedSeats: seats }, () => {
-      this.updateCost();
-      this.haveNewPlan();
+    this.handleSubscriptionChange(
+      this.state.selectedPlan,
+      this.state.selectedName,
+      seats
+    );
+  }
+
+  async handleSubscriptionChange(plan, planName, seats) {
+    const selected = { selectedSeats: seats, selectedPlan: plan };
+    const current = {
+      currentPlan: this.props.currentPlan.plan,
+      currentSeats: this.props.currentPlan.seats
+    };
+
+    const hasPlanChanged = supportUpdateHelper.hasPlanChanged(
+      selected,
+      current
+    );
+
+    const { cost } = await fetchPlanPricing(
+      selected.selectedSeats,
+      selected.selectedPlan
+    );
+
+    this.setState({
+      selectedPlan: plan,
+      selectedName: planName,
+      selectedSeats: seats,
+      selectedCost: cost,
+      updateButtonEnabled: hasPlanChanged
     });
   }
 
-  async handleClick(e) {
+  async handleUpdatePlanClick(e) {
     await this.props.updateCurrentPlan(this.state);
-    this.props.history.push('/confirm');
+    this.props.history.push("/confirm");
   }
 
   render() {
-    
-    if (!this.props.currentPlan) return ("Loading...");    
+    if (!this.props.currentPlan) return "Loading...";
     const plans = Object.keys(this.props.plansAndNames);
-  
+
     return (
       <div className="update-component">
         <div className="update-product">Support Plan:</div>
@@ -117,17 +124,14 @@ class SupportUpdate extends React.Component {
 
         <button
           className="update-button"
-          disabled={!this.state.newPlan}
-          onClick={this.handleClick}
+          disabled={!this.state.updateButtonEnabled}
+          onClick={this.handleUpdatePlanClick}
         >
           Update Plan
         </button>
       </div>
     );
-
   }
-
-
 }
 
 export default SupportUpdate;

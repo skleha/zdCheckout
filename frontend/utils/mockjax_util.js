@@ -48,11 +48,10 @@ $.mockjax({
   url: "/api/preview",
   type: "GET",
   response: function(request) {
+    console.log(request);
+    debugger;
     this.responseText = {
-      selectedPlan: request.data.settings.selectedPlan,
-      selectedName: request.data.settings.selectedName,
-      selectedSeats: request.data.settings.selectedSeats,
-      selectedCost: request.data.settings.selectedSeats * PLAN_COSTS[request.data.settings.selectedPlan]
+      cost: request.data.seats * PLAN_COSTS[request.data.plan]
     }
   }
 });
