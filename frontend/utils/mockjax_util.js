@@ -54,7 +54,7 @@ $.mockjax({
 });
 
 $.mockjax({
-  url: "/api/current/update",
+  url: "/api/current",
   type: 'PUT',
   response: function(request) {
     let newData = {
@@ -66,6 +66,6 @@ $.mockjax({
 
     prevSubscription = currSubscription;
     currSubscription = newData;
-    this.responseText = newData;
+    this.responseText = currSubscription;
   }
 });

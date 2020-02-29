@@ -1,7 +1,7 @@
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import SupportConfirm from "./SupportConfirm";
-import { fetchPreviousPlan } from "../../actions/support_actions";
+import { fetchCurrentPlan, fetchPreviousPlan } from "../../actions/support_actions";
 
 const mapStateToProps = state => ({
   currentPlan: state.support.currentPlan,
@@ -9,6 +9,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
+  fetchCurrentPlan: () => dispatch(fetchCurrentPlan()),
   fetchPreviousPlan: () => dispatch(fetchPreviousPlan())
 });
 
