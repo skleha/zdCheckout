@@ -1,35 +1,41 @@
+import * as core from "core-js/stable";
+import * as regen from "regenerator-runtime";
 
-export const fetchCurrentPlan = () => {
-  return $.ajax({
+
+export const fetchCurrentPlan = async () => {
+  const currentPlan = await $.ajax({
     url: "/api/current",
     type: "GET"
   });
+
+  return currentPlan;
 }
 
-export const fetchPreviousPlan = () => {
-  return $.ajax({
+export const fetchPreviousPlan = async () => {
+  const previousPlan = await $.ajax({
     url: "/api/previous",
     type: "GET"
-  });
+  })
+  return previousPlan;
 }
 
-export const fetchAvailablePlans = () => {
-  return $.ajax({
+export const fetchAvailablePlans = async () => {
+  return await $.ajax({
     url: "/api/support/plans",
     type: "GET"
   });
 }
 
-export const fetchPlanPricing = settings => {
-  return $.ajax({
+export const fetchPlanPricing = async settings => {
+  return await $.ajax({
     url: "/api/preview",
     type: "GET",
     data: { settings }
   });
 }
 
-export const updateCurrentPlan = settings => {
-  return $.ajax({
+export const updateCurrentPlan = async settings => {
+  return await $.ajax({
     url: "/api/current",
     type: "PUT",
     data: { settings }

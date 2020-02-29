@@ -13,7 +13,7 @@ const PLAN_NAMES = {
   best: "Best"
 };
 
-let prevSubscription;
+let prevSubscription = "hello";
 
 let currSubscription = {
   plan: "good",
@@ -25,13 +25,17 @@ let currSubscription = {
 $.mockjax({
   url: "/api/current",
   type: "GET",
-  responseText: currSubscription
+  response: function() {
+    this.responseText = currSubscription;
+  }
 });
 
 $.mockjax({
   url: "/api/previous",
   type: "GET",
-  responseText: prevSubscription
+  response: function() {
+    this.responseText = prevSubscription;
+  }
 });
 
 $.mockjax({
@@ -57,6 +61,7 @@ $.mockjax({
   url: "/api/current",
   type: 'PUT',
   response: function(request) {
+    
     let newData = {
       plan: request.data.settings.selectedPlan,
       name: request.data.settings.selectedName,
@@ -64,7 +69,7 @@ $.mockjax({
       cost: request.data.settings.selectedCost
     };
 
-    prevSubscription = currSubscription;
+    prevSubscription = {...currSubscription};
     currSubscription = newData;
     this.responseText = currSubscription;
   }
