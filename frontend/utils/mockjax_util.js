@@ -48,8 +48,6 @@ $.mockjax({
   url: "/api/preview",
   type: "GET",
   response: function(request) {
-    console.log(request);
-    debugger;
     this.responseText = {
       cost: request.data.seats * PLAN_COSTS[request.data.plan]
     }
