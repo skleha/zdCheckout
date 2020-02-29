@@ -55,7 +55,7 @@ $.mockjax({
 
 $.mockjax({
   url: "/api/current/update",
-  type: 'PATCH',
+  type: 'PUT',
   response: function(request) {
     let newData = {
       plan: request.data.settings.selectedPlan,

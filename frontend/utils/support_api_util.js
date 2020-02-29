@@ -31,7 +31,7 @@ export const fetchPlanPricing = settings => {
 export const updateCurrentPlan = settings => {
   return $.ajax({
     url: "/api/current/update",
-    type: "PATCH",
+    type: "PUT",
     data: { settings }
   });
 }
