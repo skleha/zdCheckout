@@ -9,10 +9,6 @@
   margin-bottom: 20px;
 }
 
-
-
-
-
 /* UPDATE COMPONENT */
 
 .update-component {
@@ -77,14 +73,27 @@ button:disabled {
   color: darkgrey;
 }
 
-
-/* CONFIRM COMPONENT */
+/* CONFIRM PAGE */
 
 .confirm {
-  padding: 20px;
+ padding: 20px; 
 }
 
 .confirm-title {
+  margin-bottom: 20px;
+}
+
+
+/* CONFIRM COMPONENT */
+
+.confirm-component {
+  padding: 20px;
+  background-color: lightgrey;
+  border-radius: 5px;
+  width: 500px;
+}
+
+.confirm-component-title {
   margin-bottom: 25px;
   text-align: center;
   font-size: 18px;
@@ -95,6 +104,7 @@ button:disabled {
   grid-template-columns: 120px 200px 200px;
   grid-row-gap: 15px;
   font-size: 16px;
+  margin-bottom: 40px;
 }
 
 .confirm-grid-header {
@@ -109,4 +119,10 @@ button:disabled {
 .confirm-grid-data.changed {
   color: royalblue;
   font-weight: bold; 
+}
+
+.confirm-back-button {
+  display: block;
+  margin-left: auto;
+  margin-right: 0;
 }
