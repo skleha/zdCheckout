@@ -7,7 +7,7 @@ class SupportConfirm extends React.Component {
     super(props);
     this.state = { isLoading: true}
 
-    this.handleClick = this.handleClick.bind(this);
+    this.handleBackClick = this.handleBackClick.bind(this);
   }
 
   async componentDidMount() {
@@ -15,7 +15,7 @@ class SupportConfirm extends React.Component {
     this.setState({ isLoading: false});
   }
 
-  handleClick(e) {
+  handleBackClick(e) {
     this.props.history.push('/update');
   }
 
@@ -28,19 +28,8 @@ class SupportConfirm extends React.Component {
       hasPlanChanged,
       hasSeatsChanged,
       hasCostChanged
-    } = supportUpdateHelper.hasSubscriptionChanged(
-      {
-        selectedPlan: updated.plan,
-        selectedSeats: updated.seats,
-        selectedCost: updated.cost
-      },
-      {
-        currentPlan: previous.plan,
-        currentSeats: previous.seats,
-        currentCost: previous.cost
-      }
-    );
-
+    } = supportUpdateHelper.hasSubscriptionChanged(previous, updated);
+    
     const planChangeClassName = classNames("confirm-grid-data", {
       changed: hasPlanChanged
     });
@@ -68,7 +57,7 @@ class SupportConfirm extends React.Component {
           <div className="confirm-grid-data">{previous.cost}</div>
           <div className={costChangeClassName}>{updated.cost}</div>
         </div>
-        <button className="confirm-back-button" onClick={this.handleClick}>
+        <button className="confirm-back-button" onClick={this.handleBackClick}>
           Back to Updates
         </button>
       </div>
