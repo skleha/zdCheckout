@@ -1,10 +1,19 @@
 {
   "plugins": [
     [
-      "transform-runtime",
+      "@babel/plugin-transform-destructuring",
       {
-        "polyfill": false,
-        "regenerator": true
+        "useBuiltIns": true
+      }
+    ],
+    [
+      "@babel/plugin-transform-runtime",
+      {
+        "absoluteRuntime": false,
+        "corejs": 3,
+        "helpers": true,
+        "regenerator": true,
+        "useESModules": false
       }
     ]
   ]

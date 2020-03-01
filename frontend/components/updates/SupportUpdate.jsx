@@ -1,17 +1,12 @@
 import React from "react";
 import { fetchPlanPricing } from '../../utils/support_api_util';
 import * as supportUpdateHelper from '../../helpers/supportUpdateHelper';
+import { DefaultSubscription } from '../../constants/SubscriptionConstants'
 
 class SupportUpdate extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      selectedPlan: "no plan",
-      selectedName: "no plan",
-      selectedSeats: 0,
-      selectedCost: 0,
-      updateButtonEnabled: false
-    };
+    this.state = DefaultSubscription;
 
     this.handlePlanChange = this.handlePlanChange.bind(this);
     this.handleSeatChange = this.handleSeatChange.bind(this);
