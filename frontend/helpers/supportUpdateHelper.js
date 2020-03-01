@@ -1,11 +1,9 @@
 
-export const hasSubscriptionChanged = (selected, current) => {
-  const { currentPlan, currentSeats, currentCost } = current;
-  const { selectedPlan, selectedSeats, selectedCost } = selected;
-
-  const hasPlanChanged = selectedPlan !== currentPlan;
-  const hasSeatsChanged = Number(selectedSeats) !== Number(currentSeats);
-  const hasCostChanged = currentCost !== selectedCost;
+export const hasSubscriptionChanged = (selectedPlan, currentPlan) => {
+  
+  const hasPlanChanged = selectedPlan.plan !== currentPlan.plan;
+  const hasSeatsChanged = Number(selectedPlan.seats) !== Number(currentPlan.seats);
+  const hasCostChanged = selectedPlan.cost !== currentPlan.cost;
   
   return { hasPlanChanged, hasSeatsChanged, hasCostChanged }
 };
