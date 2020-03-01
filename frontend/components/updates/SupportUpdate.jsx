@@ -105,7 +105,7 @@ class SupportUpdate extends React.Component {
           <input
             type="number"
             className="update-input"
-            placeholder="seats"
+            data-testid="seats-select"
             value={this.state.selectedPlan.seats}
             onChange={this.handleSeatChange}
           />

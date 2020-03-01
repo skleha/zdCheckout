@@ -1,20 +1,25 @@
 import React from 'react';
 import * as SubscriptionHelpers from '../frontend/helpers/supportHelpers';
 import SupportPlan from '../frontend/models/SupportPlan';
-import { cleanup, fireEvent, render, wait, getByPlaceholderText, getByTestId } from '@testing-library/react';
+import { cleanup, fireEvent, render, wait, getByPlaceholderText, getByTestId, waitForDomChange } from '@testing-library/react';
 import SupportConfirm from '../frontend/components/confirms/SupportConfirm';
 import SupportUpdate from '../frontend/components/updates/SupportUpdate';
+import * as SubscriptionConstants from '../frontend/constants/constants';
 
-
-const plan = new SupportPlan("best", "Best", 5, 5000);
-const samePlan = new SupportPlan("best", "Best", 5, 5000);
-const differentPlan = new SupportPlan("good", "Good", 5, 50);
-const differentSeats = new SupportPlan("best", "Best", 10, 10000);
-const differentSeatsAndPlan = new SupportPlan("good", "Good", 10, 100);
 
 
 describe('Test hasChangedSubscriptions helper function', () => {
 
+  let plan, samePlan, differentPlan, differentSeats, differentSeatsAndPlan;
+
+  beforeAll(() => {
+    plan = new SupportPlan("best", "Best", 5, 5000);
+    samePlan = new SupportPlan("best", "Best", 5, 5000);
+    differentPlan = new SupportPlan("good", "Good", 5, 50);
+    differentSeats = new SupportPlan("best", "Best", 10, 10000);
+    differentSeatsAndPlan = new SupportPlan("good", "Good", 10, 100);
+  })
+  
   test('hasSubscriptionChanged should yield all falses when same plan', () => {
     const {hasPlanChanged, hasSeatsChanged, hasCostChanged} = SubscriptionHelpers.hasSubscriptionChanged(
       plan,
@@ -74,35 +79,37 @@ describe('Test hasChangedSubscriptions helper function', () => {
 
 })
 
-const bestPlan = new SupportPlan("best", "Best", 5, 5000);
-const goodPlan = new SupportPlan('good', 'Good', 5, 50);
 
-const PlanNames = {
-  basic: 'Basic',
-  good: 'Good',
-  better: 'Better',
-  best: 'Best',
-}
+
+
+
 
 
 describe('React tests', () => {
-  afterEach(cleanup)
+  afterEach(cleanup);
+
+  let bestPlan, goodPlan;
+  beforeAll(() => {
+    bestPlan = new SupportPlan("best", "Best", 5, 5000);
+    goodPlan = new SupportPlan("good", "Good", 5, 50);
+  })
  
+
   it('SupportUpdate component displays current subscription information upon load', async () => {
     
-    const { getByPlaceholderText, getByTestId } = render(
+    const { getByTestId } = render(
       <SupportUpdate
-        plansAndNames={PlanNames}
+        plansAndNames={SubscriptionConstants.plansAndNames}
         currentPlan={goodPlan}
-        fetchAvailablePlans={() => { return PlanNames }}
+        fetchAvailablePlans={() => { return SubscriptionConstants.plansAndNames }}
         fetchCurrentPlan={() => { return goodPlan }}
       />
       )
       
-      await wait(() => getByPlaceholderText("seats"))
-      const seats = getByPlaceholderText("seats")      
-      const cost = getByTestId("cost")
+      await wait(() => getByTestId("seats-select"))
       const plan = getByTestId('plan-select')
+      const seats = getByTestId("seats-select")      
+      const cost = getByTestId("cost")
       
       expect(plan.value).toBe("good");
       expect(seats.value).toBe("5")
@@ -110,62 +117,78 @@ describe('React tests', () => {
   })
 
 
-  it('SupportUpdate component updates cost on plan or seat change', async () => {
+  it('SupportUpdate component updates cost on plan change', async () => {
 
-    const { getByText, getByTestId } = render(
+    const { getByDisplayValue, getByTestId } = render(
       <SupportUpdate
-        plansAndNames={PlanNames}
+        plansAndNames={SubscriptionConstants.plansAndNames}
         currentPlan={goodPlan}
         fetchAvailablePlans={() => {
-          return PlanNames;
+          return SubscriptionConstants.plansAndNames;
         }}
         fetchCurrentPlan={() => {
           return goodPlan;
+        }}
+        fetchPlanPricing={() => {
+          return { cost: 5000 };
         }}
       />
     );
 
       await wait(() => getByTestId("plan-select"));
-      const planSelect = getByTestId("plan-select");
-      console.log(planSelect.value);
-      
+      const plan = getByTestId("plan-select");
+    
+      fireEvent.change(getByDisplayValue(/good/i), {
+        target: { value: SubscriptionConstants.plansAndNames.best }
+      });
 
-      // fireEvent.click(getByText(PlanNames.best));
-
-
-      // fireEvent(
-      //   getByText("Best"),
-      //   new MouseEvent("click", {
-      //     bubbles: true,
-      //     cancelable: true
-      //   })
-      // );
-      
-      fireEvent.change(planSelect, {target: {value: 'Best'}});
-
-
-      const planSelectUpdated = getByTestId("plan-select");
-      console.log(planSelectUpdated.value);
-
+       await waitForDomChange({plan});
+       expect(plan.value).toBe("best");
+    
+      // Race condition?
       const cost = getByTestId("cost");
-      console.log(cost.innerHTML);
-      
-
-      await wait(() => getByText("5000"));
-      const myCost = getByText("5000");
-      
-      expect(cost).toBeDefined();
-
+      await waitForDomChange({cost});
+      expect(cost.innerHTML).toBe("5000");
   })
 
 
+
+  it("SupportUpdate component updates cost on seat change", async () => {
+    const { getByTestId } = render(
+      <SupportUpdate
+        plansAndNames={SubscriptionConstants.plansAndNames}
+        currentPlan={goodPlan}
+        fetchAvailablePlans={() => {
+          return SubscriptionConstants.plansAndNames;
+        }}
+        fetchCurrentPlan={() => {
+          return goodPlan;
+        }}
+        fetchPlanPricing={() => {
+          return { cost: 100 };
+        }}
+      />
+    );
+
+    await wait(() => getByTestId("seats-select"));
+    const seats = getByTestId("seats-select");
+    const cost = getByTestId("cost");
+
+    fireEvent.change(seats, {
+      target: { value: 10 }
+    });
+
+    await waitForDomChange({ seats });
+    expect(seats.value).toBe("10");
+    expect(cost.innerHTML).toBe("100");
+  });
 
 
 
   it('SupportUpdate component loads with current plan and update button disabled', async () => {
     const { getByText } = render(
       <SupportUpdate
-        plansAndNames={PlanNames}
+        plansAndNames={SubscriptionConstants.plansAndNames}
         currentPlan={goodPlan}
         fetchAvailablePlans={() => {}}
         fetchCurrentPlan={() => {
@@ -179,6 +202,29 @@ describe('React tests', () => {
 
     expect(button.disabled).toBe(true)
   })
+
+  // it("Upon two changes, one to a new plan, and another BACK to current plan, update button is disabled", async () => {
+  //   const { getByText } = render(
+  //     <SupportUpdate
+  //       plansAndNames={SubscriptionConstants.plansAndNames}
+  //       currentPlan={goodPlan}
+  //       fetchAvailablePlans={() => {}}
+  //       fetchCurrentPlan={() => {
+  //         return { plan: "good", name: "Good", seats: 5, cost: 50 };
+  //       }}
+  //     />
+  //   );
+
+  //   await wait(() => getByText("Update Plan"));
+  //   const button = getByText("Update Plan");
+
+  //   expect(button.disabled).toBe(true);
+  // });
+
+
+
+
+
 
   it('SupportConfirm component loads with Back to Updates button', async () => {
     const { getByText } = render(
