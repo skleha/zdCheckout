@@ -1,5 +1,5 @@
 import * as SupportAPIUtil from '../utils/support_api_util';
-import SupportPlan from '../model/SupportPlan';
+import SupportPlan from '../models/SupportPlan';
 export const RECEIVE_CURRENT_PLAN = "RECEIVE_CURRENT_PLAN";
 export const RECEIVE_AVAILABLE_PLANS = "RECEIVE_AVAILABLE_PLANS";
 export const RECEIVE_PREVIOUS_PLAN = "RECEIVE_PREVIOUS_PLAN";
