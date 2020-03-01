@@ -1,7 +1,7 @@
 import React from 'react';
 import * as SubscriptionHelpers from '../frontend/helpers/supportHelpers';
 import SupportPlan from '../frontend/models/SupportPlan';
-import { cleanup, fireEvent, render, wait } from '@testing-library/react';
+import { cleanup, fireEvent, render, wait, getByPlaceholderText, getByTestId } from '@testing-library/react';
 import SupportConfirm from '../frontend/components/confirms/SupportConfirm';
 import SupportUpdate from '../frontend/components/updates/SupportUpdate';
 
@@ -87,6 +87,80 @@ const PlanNames = {
 describe('React tests', () => {
   afterEach(cleanup)
  
+  it('SupportUpdate component displays current subscription information upon load', async () => {
+    
+    const { getByPlaceholderText, getByTestId } = render(
+      <SupportUpdate
+        plansAndNames={PlanNames}
+        currentPlan={goodPlan}
+        fetchAvailablePlans={() => { return PlanNames }}
+        fetchCurrentPlan={() => { return goodPlan }}
+      />
+      )
+      
+      await wait(() => getByPlaceholderText("seats"))
+      const seats = getByPlaceholderText("seats")      
+      const cost = getByTestId("cost")
+      const plan = getByTestId('plan-select')
+      
+      expect(plan.value).toBe("good");
+      expect(seats.value).toBe("5")
+      expect(cost.innerHTML).toBe("50");
+  })
+
+
+  it('SupportUpdate component updates cost on plan or seat change', async () => {
+
+    const { getByText, getByTestId } = render(
+      <SupportUpdate
+        plansAndNames={PlanNames}
+        currentPlan={goodPlan}
+        fetchAvailablePlans={() => {
+          return PlanNames;
+        }}
+        fetchCurrentPlan={() => {
+          return goodPlan;
+        }}
+      />
+    );
+
+      await wait(() => getByTestId("plan-select"));
+      const planSelect = getByTestId("plan-select");
+      console.log(planSelect.value);
+      
+
+      // fireEvent.click(getByText(PlanNames.best));
+
+
+      // fireEvent(
+      //   getByText("Best"),
+      //   new MouseEvent("click", {
+      //     bubbles: true,
+      //     cancelable: true
+      //   })
+      // );
+      
+      fireEvent.change(planSelect, {target: {value: 'Best'}});
+
+
+      const planSelectUpdated = getByTestId("plan-select");
+      console.log(planSelectUpdated.value);
+
+      const cost = getByTestId("cost");
+      console.log(cost.innerHTML);
+      
+
+      await wait(() => getByText("5000"));
+      const myCost = getByText("5000");
+      
+      expect(cost).toBeDefined();
+
+  })
+
+
+
+
+
   it('SupportUpdate component loads with current plan and update button disabled', async () => {
     const { getByText } = render(
       <SupportUpdate
@@ -94,14 +168,7 @@ describe('React tests', () => {
         currentPlan={goodPlan}
         fetchAvailablePlans={() => {}}
         fetchCurrentPlan={() => {
-          return new Promise((resolve, reject) => {
-            resolve({
-              plan: 'good',
-              name: 'Good',
-              seats: 5,
-              cost: 50,
-            })
-          })
+          return { plan: 'good', name: 'Good', seats: 5, cost: 50 }
         }}
       />
     )

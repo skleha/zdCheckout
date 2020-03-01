@@ -92,6 +92,7 @@ class SupportUpdate extends React.Component {
 
           <select
             className="update-select"
+            data-testid="plan-select"
             value={this.state.selectedPlan.plan}
             onChange={this.handlePlanChange}
           >
@@ -105,11 +106,12 @@ class SupportUpdate extends React.Component {
           <input
             type="number"
             className="update-input"
+            placeholder="seats"
             value={this.state.selectedPlan.seats}
             onChange={this.handleSeatChange}
           />
 
-          <div className="update-cost">{this.state.selectedPlan.cost}</div>
+          <div className="update-cost" data-testid="cost">{this.state.selectedPlan.cost}</div>
         </div>
 
         <button
