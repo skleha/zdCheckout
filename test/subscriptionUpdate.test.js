@@ -1,7 +1,9 @@
+import React from 'react';
 import * as SubscriptionHelpers from '../frontend/helpers/supportHelpers';
-import * as SupportAPIUtils from '../frontend/utils/support_api_util';
 import SupportPlan from '../frontend/models/SupportPlan';
-
+import { cleanup, fireEvent, render, wait } from '@testing-library/react';
+import SupportConfirm from '../frontend/components/confirms/SupportConfirm';
+import SupportUpdate from '../frontend/components/updates/SupportUpdate';
 
 const PlanNames = {
   basic: 'Basic',
