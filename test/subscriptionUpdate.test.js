@@ -14,10 +14,9 @@ const PlanNames = {
 
 const plan = new SupportPlan("best", "Best", 5, 5000);
 const samePlan = new SupportPlan("best", "Best", 5, 5000);
-const differentSeatsAndPlan = new SupportPlan("good", "Good", 10, 100);
 const differentPlan = new SupportPlan("good", "Good", 5, 50);
+const differentSeatsAndPlan = new SupportPlan("good", "Good", 10, 100);
 const differentSeats = new SupportPlan("best", "Best", 10, 10000);
-
 
 
 describe('Test hasChangedSubscriptions helper function', () => {
@@ -78,5 +77,32 @@ describe('Test hasChangedSubscriptions helper function', () => {
     expect(hasSeatsChanged).toBe(true);
     expect(hasCostChanged).toBe(true);
   });
+
+})
+
+const currentBestPlan = new SupportPlan("best", "Best", 5, 5000);
+const selectedGoodPlan = new SupportPlan('good', 'Good', 5, 500);
+
+describe('React tests', () => {
+
+  afterEach(cleanup);
+
+  it('Loads SupportConfirm component', async () => {
+    
+    const { getByText } = render(
+    <SupportConfirm
+      currentPlan={currentBestPlan}
+      previousPlan={selectedGoodPlan}
+      fetchPreviousPlan = { () => {
+        return { plan: 'good', seats: 5, cost: 500 }
+      }}
+    />
+    )
+      
+    await wait(() => getByText('Back To Updates'));
+    const button = getByText('Back to Updates');
+  
+    expect(button).toBeDefined()
+  })
 
 })
