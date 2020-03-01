@@ -80,28 +80,27 @@ describe('Test hasChangedSubscriptions helper function', () => {
 
 })
 
-const currentBestPlan = new SupportPlan("best", "Best", 5, 5000);
-const selectedGoodPlan = new SupportPlan('good', 'Good', 5, 500);
+const currPlan = new SupportPlan("best", "Best", 5, 5000);
+const prevPlan = new SupportPlan('good', 'Good', 5, 500);
+
 
 describe('React tests', () => {
-
-  afterEach(cleanup);
-
+  afterEach(cleanup)
+ 
   it('Loads SupportConfirm component', async () => {
-    
     const { getByText } = render(
-    <SupportConfirm
-      currentPlan={currentBestPlan}
-      previousPlan={selectedGoodPlan}
-      fetchPreviousPlan = { () => {
-        return { plan: 'good', seats: 5, cost: 500 }
-      }}
-    />
+      <SupportConfirm
+        currentPlan={currPlan}
+        previousPlan={prevPlan}
+        fetchPreviousPlan={() => {
+          return { plan: 'good', seats: 5, cost: 500 }
+        }}
+      />
     )
-      
-    await wait(() => getByText('Back To Updates'));
-    const button = getByText('Back to Updates');
-  
+ 
+    await wait(() => getByText('Back to Updates'))
+    const button = getByText('Back to Updates')
+ 
     expect(button).toBeDefined()
   })
 
