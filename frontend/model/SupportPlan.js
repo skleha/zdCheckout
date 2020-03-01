@@ -2,15 +2,15 @@
 
 class SupportPlan {
 
-  constructor(id, name, seats, cost) {
-    this.id = id;
+  constructor(plan, name, seats, cost) {
+    this.plan = plan;
     this.name = name;
     this.seats = seats;
     this.cost = cost;
   }
 
-  setId(id) {
-    this.id = id;
+  setPlan(plan) {
+    this.plan = plan;
   }
 
   setName(name) {

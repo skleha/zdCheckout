@@ -1,16 +1,29 @@
 import * as SupportAPIUtil from '../utils/support_api_util';
-
+import SupportPlan from '../model/SupportPlan';
 
 export const RECEIVE_CURRENT_PLAN = "RECEIVE_CURRENT_PLAN";
 export const RECEIVE_AVAILABLE_PLANS = "RECEIVE_AVAILABLE_PLANS";
 export const RECEIVE_PREVIOUS_PLAN = "RECEIVE_PREVIOUS_PLAN";
 
 
-const receiveCurrPlan = currentPlan => {
+const receiveCurrentPlan = currentPlan => {
+  const { plan, name, seats, cost } = currentPlan;
+  const currPlan = new SupportPlan(plan, name, seats, cost);
+
   return ({
     type: RECEIVE_CURRENT_PLAN,
-    currentPlan
+    currPlan
   })
+};
+
+const receivePreviousPlan = previousPlan => {
+  const { plan, name, seats, cost } = previousPlan;
+  const prevPlan = new SupportPlan(plan, name, seats, cost);
+
+  return {
+    type: RECEIVE_PREVIOUS_PLAN,
+    prevPlan
+  };
 };
 
 const receiveAvailPlans = availablePlans => {
@@ -20,22 +33,16 @@ const receiveAvailPlans = availablePlans => {
   })
 };
 
-const receivePrevPlan = previousPlan => {
-  return ({
-    type: RECEIVE_PREVIOUS_PLAN,
-    previousPlan
-  })
-};
 
 
 export const fetchCurrentPlan = () => dispatch => (
   SupportAPIUtil.fetchCurrentPlan()
-    .then(plan => dispatch(receiveCurrPlan(plan)))
+    .then(plan => dispatch(receiveCurrentPlan(plan)))
 );
 
 export const fetchPreviousPlan = () => dispatch => (
   SupportAPIUtil.fetchPreviousPlan()
-    .then(plan => dispatch(receivePrevPlan(plan)))
+    .then(plan => dispatch(receivePreviousPlan(plan)))
 )
 
 export const fetchAvailablePlans = () => dispatch => (
