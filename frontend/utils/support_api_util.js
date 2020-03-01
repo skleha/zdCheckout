@@ -3,20 +3,17 @@ import * as regen from "regenerator-runtime";
 
 
 export const fetchCurrentPlan = async () => {
-  const currentPlan = await $.ajax({
+  return await $.ajax({
     url: "/api/current",
     type: "GET"
   });
-
-  return currentPlan;
 }
 
 export const fetchPreviousPlan = async () => {
-  const previousPlan = await $.ajax({
+  return await $.ajax({
     url: "/api/previous",
     type: "GET"
   })
-  return previousPlan;
 }
 
 export const fetchAvailablePlans = async () => {
