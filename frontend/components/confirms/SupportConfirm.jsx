@@ -1,5 +1,5 @@
 import React from "react";
-import * as classNames from 'classnames'
+import classNames from 'classnames'
 import * as supportHelper from "../../helpers/supportHelpers";
 
 class SupportConfirm extends React.Component {

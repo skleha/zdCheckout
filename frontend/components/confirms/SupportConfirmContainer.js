@@ -9,7 +9,6 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchCurrentPlan: () => dispatch(fetchCurrentPlan()),
   fetchPreviousPlan: () => dispatch(fetchPreviousPlan())
 });
 
