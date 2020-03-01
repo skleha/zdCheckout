@@ -1,5 +1,5 @@
 
-const PLAN_COSTS = {
+const PLAN_COSTS_USD = {
   basic: 1,
   good: 10,
   better: 100,
@@ -49,7 +49,7 @@ $.mockjax({
   type: "GET",
   response: function(request) {
     this.responseText = {
-      cost: request.data.seats * PLAN_COSTS[request.data.plan]
+      cost: request.data.seats * PLAN_COSTS_USD[request.data.plan]
     }
   }
 });
@@ -58,15 +58,15 @@ $.mockjax({
   url: "/api/current",
   type: 'PUT',
   response: function(request) {
-    
+
     let newData = {
-      plan: request.data.settings.selectedPlan,
-      name: request.data.settings.selectedName,
-      seats: request.data.settings.selectedSeats,
-      cost: request.data.settings.selectedCost
+      plan: request.data.settings.plan,
+      name: request.data.settings.name,
+      seats: request.data.settings.seats,
+      cost: request.data.settings.cost
     };
 
-    prevSubscription = {...currSubscription};
+    prevSubscription = currSubscription;
     currSubscription = newData;
     this.responseText = currSubscription;
   }

@@ -7,11 +7,11 @@ const SupportReducer = (oldState = {currentPlan: [], availablePlans: []}, action
   switch (action.type) {
 
     case RECEIVE_CURRENT_PLAN:
-      newState["currentPlan"] = action.currentPlan;
+      newState["currentPlan"] = action.currPlan;
       return newState;
 
     case RECEIVE_PREVIOUS_PLAN:
-      newState["previousPlan"] = action.previousPlan;
+      newState["previousPlan"] = action.prevPlan;
       return newState;
 
     case RECEIVE_AVAILABLE_PLANS:

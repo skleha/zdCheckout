@@ -1,92 +1,84 @@
 import React from "react";
 import { fetchPlanPricing } from '../../utils/support_api_util';
-import * as supportUpdateHelper from '../../helpers/supportUpdateHelper';
-import { DefaultSubscription } from '../../constants/SubscriptionConstants'
+import * as supportHelper from '../../helpers/supportHelpers';
+import SupportPlan from "../../models/SupportPlan";
 
 class SupportUpdate extends React.Component {
   constructor(props) {
     super(props);
-    this.state = DefaultSubscription;
+    this.state = {
+      selectedPlan: "",
+      isLoading: true,
+      updateButtonEnabled: false
+    }
 
     this.handlePlanChange = this.handlePlanChange.bind(this);
     this.handleSeatChange = this.handleSeatChange.bind(this);
     this.handleUpdatePlanClick = this.handleUpdatePlanClick.bind(this);
   }
 
-  componentDidMount() {
-    this.props.fetchCurrentPlan().then(res => {
-      this.setState({
-        selectedPlan: this.props.currentPlan["plan"],
-        selectedName: this.props.currentPlan["name"],
-        selectedSeats: this.props.currentPlan["seats"],
-        selectedCost: this.props.currentPlan["cost"]
+  async componentDidMount() {
+    await this.props.fetchCurrentPlan()
+    const { plan, name, seats, cost } = this.props.currentPlan;
+    
+    this.setState({
+      selectedPlan: new SupportPlan(plan, name, seats, cost),
+      isLoading: false,
       });
-    });
+
     this.props.fetchAvailablePlans();
   }
 
-  getPlanName(plansAndNames, plan) {
-    return plansAndNames[plan];
-  }
 
   handlePlanChange(e) {
     const selectedPlan = e.target.value;
-    const selectedName = this.getPlanName(
-      this.props.plansAndNames,
-      selectedPlan
-    );
+    const selectedName = this.props.plansAndNames[selectedPlan];
+  
     this.handleSubscriptionChange(
       selectedPlan,
       selectedName,
-      this.state.selectedSeats
+      this.state.selectedPlan.seats
     );
   }
 
+
   handleSeatChange(e) {
     const seats = e.target.value;
+
     this.handleSubscriptionChange(
-      this.state.selectedPlan,
-      this.state.selectedName,
+      this.state.selectedPlan.plan,
+      this.state.selectedPlan.name,
       seats
     );
   }
 
+
   async handleSubscriptionChange(plan, planName, seats) {
-    const current = {
-      currentPlan: this.props.currentPlan.plan,
-      currentSeats: this.props.currentPlan.seats,
-      currentCost: this.props.currentPlan.cost
-    };
-
-    const { cost } = await fetchPlanPricing(seats, plan);
-
-    const selected = { 
-      selectedSeats: seats,
-      selectedPlan: plan,
-      selectedCost: cost 
-    };
+    const { cost } = await fetchPlanPricing(plan, seats);
+    const selectedPlan = new SupportPlan(plan, planName, seats, cost);
+    const currentPlan = this.props.currentPlan;
 
     const {
       hasPlanChanged,
       hasSeatsChanged
-    } = supportUpdateHelper.hasSubscriptionChanged(selected, current);
+    } = supportHelper.hasSubscriptionChanged(selectedPlan, currentPlan);
 
     this.setState({
-      selectedPlan: plan,
-      selectedName: planName,
-      selectedSeats: seats,
-      selectedCost: cost,
+      selectedPlan,
       updateButtonEnabled: hasPlanChanged || hasSeatsChanged
     });
+  
   }
 
+
   async handleUpdatePlanClick(e) {
-    await this.props.updateCurrentPlan(this.state);
+    await this.props.updateCurrentPlan(this.state.selectedPlan);
     this.props.history.push("/confirm");
   }
 
+
   render() {
-    if (!this.props.currentPlan) return "Loading...";
+    if (this.state.isLoading) return "Loading...";
     const plans = Object.keys(this.props.plansAndNames);
 
     return (
@@ -100,12 +92,12 @@ class SupportUpdate extends React.Component {
 
           <select
             className="update-select"
-            value={this.state.selectedPlan}
+            value={this.state.selectedPlan.plan}
             onChange={this.handlePlanChange}
           >
             {plans.map((plan, idx) => (
               <option key={idx} value={plan}>
-                {this.getPlanName(this.props.plansAndNames, plan)}
+                {this.props.plansAndNames[plan]}
               </option>
             ))}
           </select>
@@ -113,11 +105,11 @@ class SupportUpdate extends React.Component {
           <input
             type="number"
             className="update-input"
-            value={this.state.selectedSeats}
+            value={this.state.selectedPlan.seats}
             onChange={this.handleSeatChange}
           />
 
-          <div className="update-cost">{this.state.selectedCost}</div>
+          <div className="update-cost">{this.state.selectedPlan.cost}</div>
         </div>
 
         <button
