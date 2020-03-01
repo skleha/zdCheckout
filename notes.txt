@@ -1,0 +1,30 @@
+// create a plan class
+  // model folder in frontend
+  // exported, imported wherever plan needs to be be created;
+
+
+// Class Plan
+  // constructor(4 args)
+  // getter methods for each arg
+  // setter for each arg
+  // just getters and setters
+
+// Mockjax deals in objects, no plans
+// 
+
+
+
+// information from backend creates a new plan instance
+// fetchCurrentPlan
+  // create new instance of plan and save in store
+
+// mockjax
+  // 
+
+
+// store the plan in state, store previous plan in state
+
+// Eliminates confusion regaring current, previous, etc.
+
+
+CODE IS CLEANER

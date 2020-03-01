@@ -103,6 +103,8 @@ describe('API tests', () => {
 })
 
 
+// Jest load react
+
 
 
 

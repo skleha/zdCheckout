@@ -13,7 +13,7 @@ const PLAN_NAMES = {
   best: "Best"
 };
 
-let prevSubscription = "hello";
+let prevSubscription = "";
 
 let currSubscription = {
   plan: "good",
