@@ -1,6 +1,6 @@
 import React from "react";
 import { fetchPlanPricing } from '../../utils/support_api_util';
-import * as supportUpdateHelper from '../../helpers/supportUpdateHelper';
+import * as supportHelper from '../../helpers/supportHelpers';
 import SupportPlan from "../../model/SupportPlan";
 
 class SupportUpdate extends React.Component {
@@ -61,7 +61,7 @@ class SupportUpdate extends React.Component {
     const {
       hasPlanChanged,
       hasSeatsChanged
-    } = supportUpdateHelper.hasSubscriptionChanged(selectedPlan, currentPlan);
+    } = supportHelper.hasSubscriptionChanged(selectedPlan, currentPlan);
 
     this.setState({
       selectedPlan,
