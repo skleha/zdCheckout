@@ -66,8 +66,6 @@ class SupportUpdate extends React.Component {
     const selectedPlan = new SupportPlan(plan, planName, seats, cost);
     const currentPlan = this.props.currentPlan;
 
-    debugger;
-
     const {
       hasPlanChanged,
       hasSeatsChanged
