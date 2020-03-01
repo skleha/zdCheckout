@@ -3,6 +3,13 @@ import * as SupportAPIUtils from '../frontend/utils/support_api_util';
 import SupportPlan from '../frontend/models/SupportPlan';
 
 
+const PlanNames = {
+  basic: 'Basic',
+  good: 'Good',
+  better: 'Better',
+  best: 'Best',
+}
+
 const plan = new SupportPlan("best", "Best", 5, 5000);
 const samePlan = new SupportPlan("best", "Best", 5, 5000);
 const differentSeatsAndPlan = new SupportPlan("good", "Good", 10, 100);
