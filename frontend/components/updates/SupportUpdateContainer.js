@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { withRouter } from "react-router";
 import SupportUpdate from './SupportUpdate';
-import { fetchCurrentPlan, fetchPreviousPlan, fetchAvailablePlans, updateCurrentPlan } from '../../actions/support_actions';
+import { fetchCurrentPlan, fetchAvailablePlans, updateCurrentPlan } from '../../actions/support_actions';
 
 
 const mapStateToProps = state => ({

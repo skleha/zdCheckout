@@ -2,26 +2,30 @@ import React from "react";
 import { fetchPlanPricing } from '../../utils/support_api_util';
 import * as supportUpdateHelper from '../../helpers/supportUpdateHelper';
 import { DefaultSubscription } from '../../constants/SubscriptionConstants'
+import SupportPlan from "../../model/SupportPlan";
 
 class SupportUpdate extends React.Component {
   constructor(props) {
     super(props);
-    this.state = DefaultSubscription;
+    this.state = {
+      selectedPlan: "",
+      isLoading: true,
+    }
 
     this.handlePlanChange = this.handlePlanChange.bind(this);
     this.handleSeatChange = this.handleSeatChange.bind(this);
     this.handleUpdatePlanClick = this.handleUpdatePlanClick.bind(this);
   }
 
-  componentDidMount() {
-    this.props.fetchCurrentPlan().then(res => {
-      this.setState({
-        selectedPlan: this.props.currentPlan["plan"],
-        selectedName: this.props.currentPlan["name"],
-        selectedSeats: this.props.currentPlan["seats"],
-        selectedCost: this.props.currentPlan["cost"]
+  async componentDidMount() {
+    await this.props.fetchCurrentPlan()
+    const { plan, name, seats, cost } = this.props.currentPlan;
+    
+    this.setState({
+      selectedPlan: new SupportPlan(plan, name, seats, cost),
+      isLoading: false
       });
-    });
+
     this.props.fetchAvailablePlans();
   }
 
@@ -35,6 +39,7 @@ class SupportUpdate extends React.Component {
       this.props.plansAndNames,
       selectedPlan
     );
+    
     this.handleSubscriptionChange(
       selectedPlan,
       selectedName,
