@@ -5,18 +5,11 @@ import { cleanup, fireEvent, render, wait } from '@testing-library/react';
 import SupportConfirm from '../frontend/components/confirms/SupportConfirm';
 import SupportUpdate from '../frontend/components/updates/SupportUpdate';
 
-const PlanNames = {
-  basic: 'Basic',
-  good: 'Good',
-  better: 'Better',
-  best: 'Best',
-}
-
 const plan = new SupportPlan("best", "Best", 5, 5000);
 const samePlan = new SupportPlan("best", "Best", 5, 5000);
 const differentPlan = new SupportPlan("good", "Good", 5, 50);
-const differentSeatsAndPlan = new SupportPlan("good", "Good", 10, 100);
 const differentSeats = new SupportPlan("best", "Best", 10, 10000);
+const differentSeatsAndPlan = new SupportPlan("good", "Good", 10, 100);
 
 
 describe('Test hasChangedSubscriptions helper function', () => {
@@ -80,18 +73,50 @@ describe('Test hasChangedSubscriptions helper function', () => {
 
 })
 
-const currPlan = new SupportPlan("best", "Best", 5, 5000);
-const prevPlan = new SupportPlan('good', 'Good', 5, 500);
+const bestPlan = new SupportPlan("best", "Best", 5, 5000);
+const goodPlan = new SupportPlan('good', 'Good', 5, 50);
+
+const PlanNames = {
+  basic: 'Basic',
+  good: 'Good',
+  better: 'Better',
+  best: 'Best',
+}
 
 
 describe('React tests', () => {
   afterEach(cleanup)
  
-  it('Loads SupportConfirm component', async () => {
+  it('SupportUpdate component loads with current plan and update button disabled', async () => {
+    const { getByText } = render(
+      <SupportUpdate
+        plansAndNames={PlanNames}
+        currentPlan={goodPlan}
+        fetchAvailablePlans={() => {}}
+        fetchCurrentPlan={() => {
+          return new Promise((resolve, reject) => {
+            resolve({
+              plan: 'good',
+              name: 'Good',
+              seats: 5,
+              cost: 50,
+            })
+          })
+        }}
+      />
+    )
+
+    await wait(() => getByText('Update Plan'))
+    const button = getByText('Update Plan')
+
+    expect(button.disabled).toBe(true)
+  })
+
+  it('SupportConfirm component loads with Back to Updates button', async () => {
     const { getByText } = render(
       <SupportConfirm
-        currentPlan={currPlan}
-        previousPlan={prevPlan}
+        currentPlan={bestPlan}
+        previousPlan={goodPlan}
         fetchPreviousPlan={() => {
           return { plan: 'good', seats: 5, cost: 500 }
         }}
