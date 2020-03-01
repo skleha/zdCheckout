@@ -32,6 +32,7 @@ export const fetchPlanPricing = async (plan, seats) => {
 }
 
 export const updateCurrentPlan = async settings => {
+  
   return await $.ajax({
     url: "/api/current",
     type: "PUT",

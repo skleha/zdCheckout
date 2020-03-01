@@ -58,15 +58,15 @@ $.mockjax({
   url: "/api/current",
   type: 'PUT',
   response: function(request) {
-    
+
     let newData = {
-      plan: request.data.settings.selectedPlan,
-      name: request.data.settings.selectedName,
-      seats: request.data.settings.selectedSeats,
-      cost: request.data.settings.selectedCost
+      plan: request.data.settings.plan,
+      name: request.data.settings.name,
+      seats: request.data.settings.seats,
+      cost: request.data.settings.cost
     };
 
-    prevSubscription = {...currSubscription};
+    prevSubscription = currSubscription;
     currSubscription = newData;
     this.responseText = currSubscription;
   }

@@ -52,5 +52,5 @@ export const fetchAvailablePlans = () => dispatch => (
 
 export const updateCurrentPlan = plan => dispatch => (
   SupportAPIUtil.updateCurrentPlan(plan)
-    .then(plan => dispatch(receiveCurrPlan(plan)))
+    .then(plan => dispatch(receiveCurrentPlan(plan)))
 );

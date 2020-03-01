@@ -72,7 +72,7 @@ class SupportUpdate extends React.Component {
 
 
   async handleUpdatePlanClick(e) {
-    await this.props.updateCurrentPlan(this.state);
+    await this.props.updateCurrentPlan(this.state.selectedPlan);
     this.props.history.push("/confirm");
   }
 
