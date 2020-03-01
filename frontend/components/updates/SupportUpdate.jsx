@@ -30,18 +30,10 @@ class SupportUpdate extends React.Component {
   }
 
 
-  getPlanName(plansAndNames, plan) {
-    return plansAndNames[plan];
-  }
-
-
   handlePlanChange(e) {
     const selectedPlan = e.target.value;
-    const selectedName = this.getPlanName(
-      this.props.plansAndNames,
-      selectedPlan
-    );
-
+    const selectedName = this.props.plansAndNames[selectedPlan];
+  
     this.handleSubscriptionChange(
       selectedPlan,
       selectedName,
@@ -70,8 +62,6 @@ class SupportUpdate extends React.Component {
       hasPlanChanged,
       hasSeatsChanged
     } = supportUpdateHelper.hasSubscriptionChanged(selectedPlan, currentPlan);
-
-    
 
     this.setState({
       selectedPlan,
@@ -107,7 +97,7 @@ class SupportUpdate extends React.Component {
           >
             {plans.map((plan, idx) => (
               <option key={idx} value={plan}>
-                {this.getPlanName(this.props.plansAndNames, plan)}
+                {this.props.plansAndNames[plan]}
               </option>
             ))}
           </select>
