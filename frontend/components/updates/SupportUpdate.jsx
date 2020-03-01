@@ -1,5 +1,4 @@
 import React from "react";
-import { fetchPlanPricing } from '../../utils/support_api_util';
 import * as supportHelper from '../../helpers/supportHelpers';
 import SupportPlan from "../../models/SupportPlan";
 
@@ -54,7 +53,7 @@ class SupportUpdate extends React.Component {
 
 
   async handleSubscriptionChange(plan, planName, seats) {
-    const { cost } = await fetchPlanPricing(plan, seats);
+    const { cost } = await this.props.fetchPlanPricing(plan, seats);
     const selectedPlan = new SupportPlan(plan, planName, seats, cost);
     const currentPlan = this.props.currentPlan;
 

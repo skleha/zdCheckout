@@ -5,6 +5,7 @@ import { cleanup, fireEvent, render, wait, getByPlaceholderText, getByTestId } f
 import SupportConfirm from '../frontend/components/confirms/SupportConfirm';
 import SupportUpdate from '../frontend/components/updates/SupportUpdate';
 
+
 const plan = new SupportPlan("best", "Best", 5, 5000);
 const samePlan = new SupportPlan("best", "Best", 5, 5000);
 const differentPlan = new SupportPlan("good", "Good", 5, 50);
