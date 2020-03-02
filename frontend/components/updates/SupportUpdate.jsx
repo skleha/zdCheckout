@@ -1,5 +1,4 @@
 import React from "react";
-import { fetchPlanPricing } from '../../utils/support_api_util';
 import * as supportHelper from '../../helpers/supportHelpers';
 import SupportPlan from "../../models/SupportPlan";
 
@@ -54,7 +53,7 @@ class SupportUpdate extends React.Component {
 
 
   async handleSubscriptionChange(plan, planName, seats) {
-    const { cost } = await fetchPlanPricing(plan, seats);
+    const { cost } = await this.props.fetchPlanPricing(plan, seats);
     const selectedPlan = new SupportPlan(plan, planName, seats, cost);
     const currentPlan = this.props.currentPlan;
 
@@ -92,6 +91,7 @@ class SupportUpdate extends React.Component {
 
           <select
             className="update-select"
+            data-testid="plan-select"
             value={this.state.selectedPlan.plan}
             onChange={this.handlePlanChange}
           >
@@ -105,11 +105,12 @@ class SupportUpdate extends React.Component {
           <input
             type="number"
             className="update-input"
+            data-testid="seats-select"
             value={this.state.selectedPlan.seats}
             onChange={this.handleSeatChange}
           />
 
-          <div className="update-cost">{this.state.selectedPlan.cost}</div>
+          <div className="update-cost" data-testid="cost">{this.state.selectedPlan.cost}</div>
         </div>
 
         <button

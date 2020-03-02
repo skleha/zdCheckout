@@ -57,8 +57,12 @@ class SupportConfirm extends React.Component {
           <div className="confirm-grid-data">{previous.cost}</div>
           <div className={costChangeClassName}>{updated.cost}</div>
         </div>
-        <button className="confirm-back-button" onClick={this.handleBackClick}>
-          Back to Updates
+        <button
+          className="confirm-back-button"
+          data-testid="back-button"
+          onClick={this.handleBackClick}
+        >
+          Back
         </button>
       </div>
     );
