@@ -8,83 +8,11 @@ import * as SubscriptionConstants from '../frontend/constants/constants';
 
 
 
-describe('Test hasChangedSubscriptions helper function', () => {
-
-  let plan, samePlan, differentPlan, differentSeats, differentSeatsAndPlan;
-
-  beforeAll(() => {
-    plan = new SupportPlan("best", "Best", 5, 5000);
-    samePlan = new SupportPlan("best", "Best", 5, 5000);
-    differentPlan = new SupportPlan("good", "Good", 5, 50);
-    differentSeats = new SupportPlan("best", "Best", 10, 10000);
-    differentSeatsAndPlan = new SupportPlan("good", "Good", 10, 100);
-  })
-  
-  test('hasSubscriptionChanged should yield all falses when same plan', () => {
-    const {hasPlanChanged, hasSeatsChanged, hasCostChanged} = SubscriptionHelpers.hasSubscriptionChanged(
-      plan,
-      samePlan
-    );
-    
-    expect(hasPlanChanged).toBe(false);
-    expect(hasSeatsChanged).toBe(false);
-    expect(hasCostChanged).toBe(false);
-  })
-
-  test("hasSubscriptionChanged should yield all trues when plan and seats are changed", () => {
-    const {
-      hasPlanChanged,
-      hasSeatsChanged,
-      hasCostChanged
-    } = SubscriptionHelpers.hasSubscriptionChanged(
-      plan,
-      differentSeatsAndPlan,
-    );
-
-    expect(hasPlanChanged).toBe(true);
-    expect(hasSeatsChanged).toBe(true);
-    expect(hasCostChanged).toBe(true);
-  });
-
-
-  test("hasSubscriptionChanged should yield two trues when plan is changed", () => {
-    const {
-      hasPlanChanged,
-      hasSeatsChanged,
-      hasCostChanged
-    } = SubscriptionHelpers.hasSubscriptionChanged(
-      plan,
-      differentPlan
-    );
-
-    expect(hasPlanChanged).toBe(true);
-    expect(hasSeatsChanged).toBe(false);
-    expect(hasCostChanged).toBe(true);
-  });
-
-  test("hasSubscriptionChanged should yield two trues when seats are changed", () => {
-    const {
-      hasPlanChanged,
-      hasSeatsChanged,
-      hasCostChanged
-    } = SubscriptionHelpers.hasSubscriptionChanged(
-      plan,
-      differentSeats
-    );
-
-    expect(hasPlanChanged).toBe(false);
-    expect(hasSeatsChanged).toBe(true);
-    expect(hasCostChanged).toBe(true);
-  });
-
-})
-
-
-
-describe('React tests', () => {
+describe('Core specification tests', () => {
   afterEach(cleanup);
 
   let bestPlan, goodPlan;
+
   beforeAll(() => {
     bestPlan = new SupportPlan("best", "Best", 5, 5000);
     goodPlan = new SupportPlan("good", "Good", 5, 50);
@@ -113,9 +41,10 @@ describe('React tests', () => {
   })
 
 
+
   it('SupportUpdate component updates cost on plan change', async () => {
 
-    const { getByDisplayValue, getByTestId } = render(
+    const { getByTestId } = render(
       <SupportUpdate
         plansAndNames={SubscriptionConstants.plansAndNames}
         currentPlan={goodPlan}
@@ -131,18 +60,17 @@ describe('React tests', () => {
       />
     );
 
+      // Get select and cost div
       await wait(() => getByTestId("plan-select"));
       const plan = getByTestId("plan-select");
-    
-      fireEvent.change(getByDisplayValue(/good/i), {
+      const cost = getByTestId("cost");
+
+      // Change drop down to another plan
+      fireEvent.change(plan, {
         target: { value: SubscriptionConstants.plansAndNames.best }
       });
 
-       await waitForDomChange({plan});
-       expect(plan.value).toBe("best");
-    
-      // Race condition?
-      const cost = getByTestId("cost");
+      // Confirm cost has changed to fetched price 
       await waitForDomChange({cost});
       expect(cost.innerHTML).toBe("5000");
   })
@@ -166,14 +94,17 @@ describe('React tests', () => {
       />
     );
 
+    // Get seats input and cost div
     await wait(() => getByTestId("seats-select"));
     const seats = getByTestId("seats-select");
     const cost = getByTestId("cost");
 
+    // Change the number of seats
     fireEvent.change(seats, {
       target: { value: 10 }
     });
 
+    // Confirm cost has changed to the fetched price
     await waitForDomChange({ seats });
     expect(seats.value).toBe("10");
     expect(cost.innerHTML).toBe("100");
@@ -181,7 +112,7 @@ describe('React tests', () => {
 
 
 
-  it('SupportUpdate component loads with current plan and update button disabled', async () => {
+  it('App loads with update button disabled', async () => {
     const { getByText } = render(
       <SupportUpdate
         plansAndNames={SubscriptionConstants.plansAndNames}
@@ -199,23 +130,44 @@ describe('React tests', () => {
     expect(button.disabled).toBe(true)
   })
 
-  // it("Upon two changes, one to a new plan, and another BACK to current plan, update button is disabled", async () => {
-  //   const { getByText } = render(
-  //     <SupportUpdate
-  //       plansAndNames={SubscriptionConstants.plansAndNames}
-  //       currentPlan={goodPlan}
-  //       fetchAvailablePlans={() => {}}
-  //       fetchCurrentPlan={() => {
-  //         return { plan: "good", name: "Good", seats: 5, cost: 50 };
-  //       }}
-  //     />
-  //   );
 
-  //   await wait(() => getByText("Update Plan"));
-  //   const button = getByText("Update Plan");
 
-  //   expect(button.disabled).toBe(true);
-  // });
+  it("Upon two changes, one to a new plan, and another BACK to current plan, update button is disabled", async () => {
+    
+    const { getByDisplayValue, getByText } = render(
+      <SupportUpdate
+        plansAndNames={SubscriptionConstants.plansAndNames}
+        currentPlan={goodPlan}
+        fetchAvailablePlans={() => {}}
+        fetchCurrentPlan={() => { return goodPlan; }}
+        fetchPlanPricing={() => { return { cost: 5000 }; }}
+      />
+    );
+
+    // Get button and select
+    await wait(() => getByText("Update Plan"));
+    const button = getByText("Update Plan");
+    const selectPlan = getByDisplayValue(/good/i);
+
+    // Change the plan using the select
+    fireEvent.change(selectPlan, {
+      target: { value: SubscriptionConstants.plansAndNames.best }
+    });
+    
+    // After plan change, button should be enabled
+    await waitForDomChange({ button });
+    expect(button.disabled).toBe(false);
+
+    // Change plan back to original plan
+    fireEvent.change(selectPlan, {
+      target: { value: SubscriptionConstants.plansAndNames.good }
+    });
+
+    // After change to original plan, button should be disabled
+    waitForDomChange({ button });
+    expect(button.disabled).toBe(true);
+
+  });
 
 
   it("With new subscription, click of Update button should send SupportPlan", async () => {
@@ -231,24 +183,26 @@ describe('React tests', () => {
       />
     )
 
-        // get dom elements
+        // Get select, cost div, and button
         await wait(() => getByTestId("plan-select"));
         const plan = getByTestId("plan-select");
         const cost = getByTestId("cost");
         const updateButton = getByText("Update Plan");
+        
+        // In original state, expect plan to be original plan
         expect(plan.value).toBe("good");
         
-        // change the plan from good to best
+        // Change the plan from good to best
         fireEvent.change(getByDisplayValue(/good/i), {
           target: { value: SubscriptionConstants.plansAndNames.best }
         });
 
-        // verify plan change / cost change
+        // Verify plan change / cost change
         await waitForDomChange({ plan });
-        // expect(plan.value).toBe("Best");
+        expect(plan.value).toBe("Best");
         expect(cost.innerHTML).toBe("5000")
 
-        // event:  click update plans button
+        // Event:  click update plans button
         fireEvent(
           updateButton,
           new MouseEvent("click", {
@@ -257,33 +211,91 @@ describe('React tests', () => {
           })
         );
 
-        // expect updateCurrentPlan to be called
+        // Expect updateCurrentPlan to be called
         expect(updateCurrentPlan).toHaveBeenCalledTimes(1);
-        
-        // expect updateCurrentPlan payload to be SupportPlan instance
-        
-             
-        
-      
+           
   })
+
 
 
   it('The confirmation screen should include a \'Back\' button', async () => {
     
     const { getByTestId } = render(
-      <SupportConfirm
+      <SupportConfirm 
         currentPlan={bestPlan}
         previousPlan={goodPlan}
-        fetchPreviousPlan={() => {
-          return goodPlan;
-        }}
+        fetchPreviousPlan={() => {return goodPlan }}
       />
     )
- 
-    await wait(() => getByTestId('back-button'));
-    const button = getByTestId('back-button');
- 
+
+    await wait(() => getByTestId("back-button"));
+    const button = getByTestId("back-button");
+
     expect(button).toBeDefined();
   })
 
+
 })
+
+
+
+
+describe("Test hasChangedSubscriptions helper function", () => {
+  let plan, samePlan, differentPlan, differentSeats, differentSeatsAndPlan;
+
+  beforeAll(() => {
+    plan = new SupportPlan("best", "Best", 5, 5000);
+    samePlan = new SupportPlan("best", "Best", 5, 5000);
+    differentPlan = new SupportPlan("good", "Good", 5, 50);
+    differentSeats = new SupportPlan("best", "Best", 10, 10000);
+    differentSeatsAndPlan = new SupportPlan("good", "Good", 10, 100);
+  });
+
+  test("hasSubscriptionChanged should yield all falses when same plan", () => {
+    const {
+      hasPlanChanged,
+      hasSeatsChanged,
+      hasCostChanged
+    } = SubscriptionHelpers.hasSubscriptionChanged(plan, samePlan);
+
+    expect(hasPlanChanged).toBe(false);
+    expect(hasSeatsChanged).toBe(false);
+    expect(hasCostChanged).toBe(false);
+  });
+
+  test("hasSubscriptionChanged should yield all trues when plan and seats are changed", () => {
+    const {
+      hasPlanChanged,
+      hasSeatsChanged,
+      hasCostChanged
+    } = SubscriptionHelpers.hasSubscriptionChanged(plan, differentSeatsAndPlan);
+
+    expect(hasPlanChanged).toBe(true);
+    expect(hasSeatsChanged).toBe(true);
+    expect(hasCostChanged).toBe(true);
+  });
+
+  test("hasSubscriptionChanged should yield two trues when plan is changed", () => {
+    const {
+      hasPlanChanged,
+      hasSeatsChanged,
+      hasCostChanged
+    } = SubscriptionHelpers.hasSubscriptionChanged(plan, differentPlan);
+
+    expect(hasPlanChanged).toBe(true);
+    expect(hasSeatsChanged).toBe(false);
+    expect(hasCostChanged).toBe(true);
+  });
+
+  test("hasSubscriptionChanged should yield two trues when seats are changed", () => {
+    const {
+      hasPlanChanged,
+      hasSeatsChanged,
+      hasCostChanged
+    } = SubscriptionHelpers.hasSubscriptionChanged(plan, differentSeats);
+
+    expect(hasPlanChanged).toBe(false);
+    expect(hasSeatsChanged).toBe(true);
+    expect(hasCostChanged).toBe(true);
+  });
+});
