@@ -13,8 +13,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   fetchCurrentPlan: () => dispatch(fetchCurrentPlan()),
   fetchAvailablePlans: () => dispatch(fetchAvailablePlans()),
-  updateCurrentPlan: plan => dispatch(updateCurrentPlan(plan)),
-  fetchPlanPricing: (plan, seats) => fetchPlanPricing(plan, seats)
+  fetchPlanPricing: (plan, seats) => fetchPlanPricing(plan, seats),
+  updateCurrentPlan: plan => dispatch(updateCurrentPlan(plan))
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SupportUpdate));

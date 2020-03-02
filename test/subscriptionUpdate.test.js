@@ -192,7 +192,7 @@ describe('React tests', () => {
         currentPlan={goodPlan}
         fetchAvailablePlans={() => {}}
         fetchCurrentPlan={() => {
-          return { plan: 'good', name: 'Good', seats: 5, cost: 50 }
+          return goodPlan;
         }}
       />
     )
@@ -222,23 +222,64 @@ describe('React tests', () => {
   // });
 
 
+  it("Update button should update the current subscription", async () => {
+
+      const { getByTestId, getByText } = render(
+        <SupportUpdate
+          currentPlan={goodPlan}
+          plansAndNames={SubscriptionConstants.plansAndNames}          
+          fetchCurrentPlan={() => { return goodPlan; }}
+          fetchAvailablePlans={() => { return SubscriptionConstants.plansAndNames; }}
+          fetchPlanPricing={() => { return { cost: 5000 }; }}
+          updateCurrentPlan={(plan) => { return new SupportPlan(plan, "Best", seat, 5000) }}
+      />
+    )
+
+        // get dom elements
+        await wait(() => getByTestId("plan-select"));
+        const plan = getByTestId("plan-select");
+        const cost = getByTestId("cost");
+        const updateButton = getByText("Update Plan");
+        
+        // change the plan from good to best
+        fireEvent.change(getByDisplayValue(/good/i), {
+          target: { value: SubscriptionConstants.plansAndNames.best }
+        });
+
+        // verify plan change / cost change
+        await waitForDomChange({ plan });
+        expect(plan.value).toBe("Best");
+        expect(cost.innerHTML).toBe("5000")
+
+        // event:  click update plans button
+        fireEvent(
+          updateButton,
+          new MouseEvent("click", {
+            bubbles: true,
+            cancelable: true
+          })
+        );
+
+        
+        // 
+        // currentPlan slice of state should be updated
+      
+  })
 
 
-
-
-  it('SupportConfirm component loads with Back to Updates button', async () => {
+  it('The confirmation screen should include a \'Back\' button', async () => {
     const { getByText } = render(
       <SupportConfirm
         currentPlan={bestPlan}
         previousPlan={goodPlan}
         fetchPreviousPlan={() => {
-          return { plan: 'good', seats: 5, cost: 500 }
+          return 
         }}
       />
     )
  
-    await wait(() => getByText('Back to Updates'))
-    const button = getByText('Back to Updates')
+    await wait(() => getByText('Back'))
+    const button = getByText('Back')
  
     expect(button).toBeDefined()
   })

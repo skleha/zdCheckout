@@ -58,7 +58,7 @@ class SupportConfirm extends React.Component {
           <div className={costChangeClassName}>{updated.cost}</div>
         </div>
         <button className="confirm-back-button" onClick={this.handleBackClick}>
-          Back to Updates
+          Back
         </button>
       </div>
     );
