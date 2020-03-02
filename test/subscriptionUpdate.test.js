@@ -2,8 +2,8 @@ import React from 'react';
 import * as SubscriptionHelpers from '../frontend/helpers/supportHelpers';
 import SupportPlan from '../frontend/models/SupportPlan';
 import { cleanup, fireEvent, render, wait, getByPlaceholderText, getByTestId, waitForDomChange } from '@testing-library/react';
-import SupportConfirm from '../frontend/components/confirms/SupportConfirm';
 import SupportUpdate from '../frontend/components/updates/SupportUpdate';
+import SupportConfirm from '../frontend/components/confirms/SupportConfirm';
 import * as SubscriptionConstants from '../frontend/constants/constants';
 
 
@@ -78,10 +78,6 @@ describe('Test hasChangedSubscriptions helper function', () => {
   });
 
 })
-
-
-
-
 
 
 
@@ -222,16 +218,16 @@ describe('React tests', () => {
   // });
 
 
-  it("Update button should update the current subscription", async () => {
+  it("With new subscription, click of Update button should send SupportPlan", async () => {
 
-      const { getByTestId, getByText } = render(
+      const { getByDisplayValue, getByTestId, getByText } = render(
         <SupportUpdate
           currentPlan={goodPlan}
           plansAndNames={SubscriptionConstants.plansAndNames}          
           fetchCurrentPlan={() => { return goodPlan; }}
           fetchAvailablePlans={() => { return SubscriptionConstants.plansAndNames; }}
           fetchPlanPricing={() => { return { cost: 5000 }; }}
-          updateCurrentPlan={(plan) => { return new SupportPlan(plan, "Best", seat, 5000) }}
+          updateCurrentPlan={(plan) => { return new SupportPlan(plan, "Best", 5, 5000) }}
       />
     )
 
@@ -240,6 +236,7 @@ describe('React tests', () => {
         const plan = getByTestId("plan-select");
         const cost = getByTestId("cost");
         const updateButton = getByText("Update Plan");
+        expect(plan.value).toBe("good");
         
         // change the plan from good to best
         fireEvent.change(getByDisplayValue(/good/i), {
@@ -248,7 +245,7 @@ describe('React tests', () => {
 
         // verify plan change / cost change
         await waitForDomChange({ plan });
-        expect(plan.value).toBe("Best");
+        // expect(plan.value).toBe("Best");
         expect(cost.innerHTML).toBe("5000")
 
         // event:  click update plans button
@@ -260,28 +257,33 @@ describe('React tests', () => {
           })
         );
 
+        // expect updateCurrentPlan to be called
+        expect(updateCurrentPlan).toHaveBeenCalledTimes(1);
         
-        // 
-        // currentPlan slice of state should be updated
+        // expect updateCurrentPlan payload to be SupportPlan instance
+        
+             
+        
       
   })
 
 
   it('The confirmation screen should include a \'Back\' button', async () => {
-    const { getByText } = render(
+    
+    const { getByTestId } = render(
       <SupportConfirm
         currentPlan={bestPlan}
         previousPlan={goodPlan}
         fetchPreviousPlan={() => {
-          return 
+          return goodPlan;
         }}
       />
     )
  
-    await wait(() => getByText('Back'))
-    const button = getByText('Back')
+    await wait(() => getByTestId('back-button'));
+    const button = getByTestId('back-button');
  
-    expect(button).toBeDefined()
+    expect(button).toBeDefined();
   })
 
 })
