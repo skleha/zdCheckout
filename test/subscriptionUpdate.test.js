@@ -41,41 +41,7 @@ describe('Core specification tests', () => {
   })
 
 
-
-  it('App updates cost on plan change', async () => {
-
-    const { getByTestId } = render(
-      <SupportUpdate
-        plansAndNames={SubscriptionConstants.plansAndNames}
-        currentPlan={goodPlan}
-        fetchAvailablePlans={() => {
-          return SubscriptionConstants.plansAndNames;
-        }}
-        fetchCurrentPlan={() => {
-          return goodPlan;
-        }}
-        fetchPlanPricing={() => {
-          return { cost: 5000 };
-        }}
-      />
-    );
-
-      // Get select and cost div
-      await wait(() => getByTestId("plan-select"));
-      const plan = getByTestId("plan-select");
-      const cost = getByTestId("cost");
-
-      // Change drop down to another plan
-      fireEvent.change(plan, {
-        target: { value: SubscriptionConstants.plansAndNames.best }
-      });
-
-      // Confirm cost has changed to fetched price 
-      await waitForDomChange({cost});
-      expect(cost.innerHTML).toBe("5000");
-  })
-
-  it("App updates cost on plan change - test 2", async () => {
+  it("App sends correct data to fetch pricing on plan change", async () => {
     
     // Mock fetchPlanPricing method
     const mockFetchPlanPricing = jest.fn();
@@ -135,28 +101,66 @@ describe('Core specification tests', () => {
     expect(mockFetchPlan).toBe("best");
     expect(mockFetchSeats).toBe(5);
 
+  });
+
+
+  it("App updates cost on plan change", async () => {
+    // Mock fetchPlanPricing method
+    const mockFetchPlanPricing = jest.fn();
+    mockFetchPlanPricing.mockReturnValue(
+      new Promise((resolve, reject) => {
+        resolve({
+          cost: 5000
+        });
+      })
+    );
+
+    // Mock updateCurrentPlan method
+    const mockUpdateCurrentPlan = jest.fn();
+    mockUpdateCurrentPlan.mockReturnValue(
+      new Promise((resolve, reject) => {
+        resolve({
+          plan: "best",
+          name: "Best",
+          seats: 5,
+          cost: 5000
+        });
+      })
+    );
+
+    const component = render(
+      <SupportUpdate
+        plansAndNames={SubscriptionConstants.plansAndNames}
+        currentPlan={goodPlan}
+        fetchAvailablePlans={() => {
+          return SubscriptionConstants.plansAndNames;
+        }}
+        fetchCurrentPlan={() => {
+          return goodPlan;
+        }}
+        fetchPlanPricing={mockFetchPlanPricing}
+        updateCurrentPlan={mockUpdateCurrentPlan}
+        history={[]}
+      />
+    );
+
+    // Confirm that current plan is set to 'good'
+    await wait(() => component.getByText(/good/i));
+    let plans = component.getByTestId("plan-select");
+    expect(plans.value).toBe("good");
+
+    // Select best plan from dropdown menu
+    fireEvent.change(component.getByTestId("plan-select"), {
+      target: { value: "best" }
+    });
+
     // Validate that the cost and plan selection has been updated
     await wait(() => component.getByText("5000"));
     const cost = component.getByTestId("cost").innerHTML;
     expect(cost).toBe("5000");
     expect(component.getByTestId("plan-select").value).toBe("best");
 
-    // Update button is enabled
-    const button = component.getByText("Update Plan");
-    expect(button.disabled).toBe(false);
-
-    // Click update button
-    fireEvent.click(button);
-
-    // Validate that we're sending the correct data payload
-    const [mockUpdatePlan] = mockUpdateCurrentPlan.mock.calls.pop();
-
-    expect(mockUpdatePlan.plan).toBe("best");
-    expect(mockUpdatePlan.name).toBe("Best");
-    expect(mockUpdatePlan.seats).toBe(5);
-    expect(mockUpdatePlan.cost).toBe(5000);
   });
-
 
 
   it("App updates cost on seat change", async () => {
@@ -193,6 +197,74 @@ describe('Core specification tests', () => {
   });
 
 
+  it("On plan change and \'Update Plan\' click, app sends correct data to API", async () => {
+    // Mock fetchPlanPricing method
+    const mockFetchPlanPricing = jest.fn();
+    mockFetchPlanPricing.mockReturnValue(
+      new Promise((resolve, reject) => {
+        resolve({
+          cost: 5000
+        });
+      })
+    );
+
+    // Mock updateCurrentPlan method
+    const mockUpdateCurrentPlan = jest.fn();
+    mockUpdateCurrentPlan.mockReturnValue(
+      new Promise((resolve, reject) => {
+        resolve({
+          plan: "best",
+          name: "Best",
+          seats: 5,
+          cost: 5000
+        });
+      })
+    );
+
+    const component = render(
+      <SupportUpdate
+        plansAndNames={SubscriptionConstants.plansAndNames}
+        currentPlan={goodPlan}
+        fetchAvailablePlans={() => {
+          return SubscriptionConstants.plansAndNames;
+        }}
+        fetchCurrentPlan={() => {
+          return goodPlan;
+        }}
+        fetchPlanPricing={mockFetchPlanPricing}
+        updateCurrentPlan={mockUpdateCurrentPlan}
+        history={[]}
+      />
+    );
+
+    // Confirm that current plan is set to 'good'
+    await wait(() => component.getByText(/good/i));
+    let plans = component.getByTestId("plan-select");
+    expect(plans.value).toBe("good");
+
+    // Select best plan from dropdown menu
+    fireEvent.change(component.getByTestId("plan-select"), {
+      target: { value: "best" }
+    });
+
+
+    // Update button is enabled
+    const button = component.getByText("Update Plan");
+    await waitForDomChange({ button });
+    expect(button.disabled).toBe(false);
+
+    // Click update button
+    fireEvent.click(button);
+
+    // Validate that we're sending the correct data payload
+    const [mockUpdatePlan] = mockUpdateCurrentPlan.mock.calls.pop();
+
+    expect(mockUpdatePlan.plan).toBe("best");
+    expect(mockUpdatePlan.name).toBe("Best");
+    expect(mockUpdatePlan.seats).toBe(5);
+    expect(mockUpdatePlan.cost).toBe(5000);
+  });
+
 
   it('App loads with update button disabled', async () => {
     const { getByText } = render(
@@ -216,110 +288,62 @@ describe('Core specification tests', () => {
 
   it("Upon two changes, one to a new plan, and another BACK to current plan, update button is disabled", async () => {
 
-    
+    // Mock fetchPlanPricing method
+    const mockFetchPlanPricing = jest.fn();
+    mockFetchPlanPricing.mockReturnValue(
+      new Promise((resolve, reject) => {
+        resolve({
+          cost: 5000
+        });
+      })
+    );    
 
-
-
-
-
-
-
-
-    const { getByDisplayValue, getByText } = render(
+    const component = render(
       <SupportUpdate
         plansAndNames={SubscriptionConstants.plansAndNames}
         currentPlan={goodPlan}
-        fetchAvailablePlans={() => {}}
-        fetchCurrentPlan={() => { return goodPlan; }}
-        fetchPlanPricing={() => { return { cost: 5000 }; }}
+        fetchAvailablePlans={() => {
+          return SubscriptionConstants.plansAndNames;
+        }}
+        fetchCurrentPlan={() => {
+          return goodPlan;
+        }}
+        fetchPlanPricing={mockFetchPlanPricing}
       />
     );
 
-    // Get button and select
-    await wait(() => getByText("Update Plan"));
-    const button = getByText("Update Plan");
-    const selectPlan = getByDisplayValue(/good/i);
+    // Confirm that current plan is set to 'good'
+    await wait(() => component.getByText(/good/i));
+    let plans = component.getByTestId("plan-select");
+    expect(plans.value).toBe("good");
 
-    // Change the plan using the select
-    fireEvent.change(selectPlan, {
-      target: { value: SubscriptionConstants.plansAndNames.best }
+    // Select best plan from dropdown menu
+    fireEvent.change(component.getByTestId("plan-select"), {
+      target: { value: "best" }
     });
-    
-    // After plan change, button should be enabled
+
+    // Update button should enabled
+    let button = component.getByText("Update Plan");
     await waitForDomChange({ button });
     expect(button.disabled).toBe(false);
 
-    // Change plan back to original plan
-    fireEvent.change(selectPlan, {
-      target: { value: SubscriptionConstants.plansAndNames.good }
+    // Select best plan from dropdown menu
+    fireEvent.change(component.getByTestId("plan-select"), {
+      target: { value: "good" }
     });
 
-    // After change to original plan, button should be disabled
-    waitForDomChange({ button });
+    // Update button should disabled
+    button = component.getByText("Update Plan");
+    await waitForDomChange({ button });
     expect(button.disabled).toBe(true);
 
   });
-
-
-  it("With new subscription, click of Update button should send SupportPlan", async () => {
-
-    const { getByDisplayValue, getByTestId, getByText } = render(
-      <SupportUpdate
-        currentPlan={goodPlan}
-        plansAndNames={SubscriptionConstants.plansAndNames}          
-        fetchCurrentPlan={() => { return goodPlan; }}
-        fetchAvailablePlans={() => { return SubscriptionConstants.plansAndNames; }}
-        fetchPlanPricing={() => { return { cost: 5000 }; }}
-        updateCurrentPlan={(plan) => { return new SupportPlan(plan, "Best", 5, 5000) }}
-    />
-  )
-
-      // Get select, cost div, and button
-      await wait(() => getByTestId("plan-select"));
-      const plan = getByTestId("plan-select");
-      const cost = getByTestId("cost");
-      const updateButton = getByText("Update Plan");
-      
-      // In original state, expect plan to be original plan
-      expect(plan.value).toBe("good");
-      
-      // Change the plan from good to best
-      fireEvent.change(getByDisplayValue(/good/i), {
-        target: { value: SubscriptionConstants.plansAndNames.best }
-      });
-
-      // Verify plan change / cost change
-      await waitForDomChange({ plan });
-      expect(plan.value).toBe("Best");
-      expect(cost.innerHTML).toBe("5000")
-
-      // Event:  click update plans button
-      fireEvent(
-        updateButton,
-        new MouseEvent("click", {
-          bubbles: true,
-          cancelable: true
-        })
-      );
-
-      // Expect updateCurrentPlan to be called
-      expect(updateCurrentPlan).toHaveBeenCalledTimes(1);
-
-      // Expect payload of updateCurrentPlan to be a SupportPlan
-
-
-          
-  })
 
   
 
 
 
-
-
-
-
-
+  
   it('The confirmation screen should include a \'Back\' button', async () => {
     
     const { getByTestId } = render(
