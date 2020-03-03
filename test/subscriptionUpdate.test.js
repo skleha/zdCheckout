@@ -1,14 +1,15 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { Router, MemoryRouter } from 'react-router-dom';
-import { createMemoryHistory } from 'history';
+import { Route, Router } from 'react-router-dom';
+import { createBrowserHistory } from 'history';
 import * as SubscriptionHelpers from '../frontend/helpers/supportHelpers';
-import SupportPlan from '../frontend/models/SupportPlan';
 import { cleanup, fireEvent, render, wait, getByPlaceholderText, getByTestId, waitForDomChange } from '@testing-library/react';
-import App from '../frontend/components/App';
+import SupportPlan from '../frontend/models/SupportPlan';
 import SupportUpdate from '../frontend/components/updates/SupportUpdate';
 import SupportConfirm from '../frontend/components/confirms/SupportConfirm';
 import * as SubscriptionConstants from '../frontend/constants/constants';
+import configureStore from '../frontend/store/store';
+
 
 
 describe('Core specification tests', () => {
@@ -44,7 +45,7 @@ describe('Core specification tests', () => {
   })
 
 
-  it("App sends correct data to fetch pricing on plan change", async () => {
+  it("App sends correct data to api/preview", async () => {
     
     // Mock fetchPlanPricing method
     const mockFetchPlanPricing = jest.fn();
@@ -190,7 +191,7 @@ describe('Core specification tests', () => {
   });
 
 
-  it("On plan change and \'Update Plan\' click, app sends correct data to API", async () => {
+  it("On plan change and \'Update Plan\' click, app sends correct data to api/current", async () => {
     // Mock fetchPlanPricing method
     const mockFetchPlanPricing = jest.fn();
     mockFetchPlanPricing.mockReturnValue(
@@ -422,26 +423,120 @@ describe('Core specification tests', () => {
 })
 
 
-describe("Navigation between update and confirm pages", () => {
+describe('Navigation test', () => {
+  let bestPlan, goodPlan, history, location, store;
 
-  test('Confirm back button returns to update page', () => {
-    const history = createMemoryHistory();
+  beforeAll(() => {
+    bestPlan = new SupportPlan('best', 'Best', 5, 5000);
+    goodPlan = new SupportPlan('good', 'Good', 5, 50);
+    store = configureStore();
+    history = createBrowserHistory();
+  })
+
+
+  test('When \'Update Plan\' is clicked, confirmation page is rendered', async () => {
     
-    const { container, getByText } = render(
-        
-        <MemoryRouter initialEntries={['/']} >
-          <App />
-        </MemoryRouter>
+    // Create mock promises
+    const mockFetchCurrentPlan = jest.fn();
+    mockFetchCurrentPlan.mockReturnValue(
+      new Promise((resolve, reject) => {
+        resolve({ plan: 'good', name: 'Good', seats: 5, cost: 50 });
+      })
     )
-    
-    expect(container.innerHTML).toMatch('Update Subscriptions');
-    
+
+    const mockFetchPreviousPlan = jest.fn();
+    mockFetchPreviousPlan.mockReturnValue(
+      new Promise((resolve, reject) => {
+        const plan = new SupportPlan('good', 'Good', 5, 5000);
+        store.dispatch({
+          type: 'RECEIVE_PREVIOUS_PLAN',
+          prevPlan: plan,
+        });
+        resolve(plan);
+      })
+    )
+
+    const mockFetchPlanPricing = jest.fn();
+    mockFetchPlanPricing.mockReturnValue(
+      new Promise((resolve, reject) => {
+        resolve({
+          cost: 5000,
+        });
+      })
+    )
+
+    const mockUpdateCurrentPlan = jest.fn();
+    mockUpdateCurrentPlan.mockReturnValue(
+      new Promise((resolve, reject) => {
+        const plan = new SupportPlan('best', 'Best', 5, 5000)
+        store.dispatch({
+          type: 'RECEIVE_CURRENT_PLAN',
+          currPlan: plan,
+        })
+        resolve(plan);
+      })
+    )
+
+    history.push('/')
+
+    const component = render(
+      <Provider store={store}>
+        <Router history={history}>
+          <Route
+            path="/"
+            render={({ history }) => {
+              return (
+                <SupportUpdate
+                  history={history}
+                  currentPlan={goodPlan}
+                  plansAndNames={SubscriptionConstants.plansAndNames}
+                  fetchCurrentPlan={mockFetchCurrentPlan}
+                  fetchAvailablePlans={() => {
+                    return SubscriptionConstants.plansAndNames
+                  }}
+                  fetchPlanPricing={mockFetchPlanPricing}
+                  updateCurrentPlan={() => {
+                    history.push('/confirm')
+                  }}
+                />
+              )
+            }}
+          />
+          <Route
+            path="/confirm"
+            render={({ history }) => {
+              return (
+                <SupportConfirm
+                  history={history}
+                  currentPlan={bestPlan}
+                  previousPlan={goodPlan}
+                  fetchPreviousPlan={mockFetchPreviousPlan}
+                />
+              )
+            }}
+          />
+        </Router>
+      </Provider>
+    )
+
+    // Change plan on subscription update
+    await wait(() => component.getByText('Update Plan'));
+    fireEvent.change(component.getByTestId('seats-select'), {
+      target: { value: 10 },
+    });
+
+    // Wait until 'Update Plan' page is enabled; click on 'Update Plan'
+    const button = component.getByText('Update Plan');
+    await wait(() => (component.getByText('Update Plan').disabled = false));
+    fireEvent.click(button);
+
+    // Wait until confirm page renders; ensure that update page *has* rendered
+    await wait(() => component.getByText('Updated Subscription'));
+    const newPage = component.getByText('Updated Subscription');
+    expect(newPage.innerHTML).toContain('Updated Subscription');
   })
 
 })
-
-
-
 
 
 
@@ -504,3 +599,4 @@ describe("Test hasChangedSubscriptions helper function", () => {
     expect(hasCostChanged).toBe(true);
   });
 });
+
