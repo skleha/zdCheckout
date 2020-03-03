@@ -48,14 +48,14 @@ class SupportConfirm extends React.Component {
           <div className="confirm-grid-header">Previous Subscription</div>
           <div className="confirm-grid-header">Updated Subscription</div>
           <div className="confirm-grid-title">Plan Name</div>
-          <div className="confirm-grid-data">{previous.name}</div>
-          <div className={planChangeClassName}>{updated.name}</div>
+          <div className="confirm-grid-data" data-testid="previous-name">{previous.name}</div>
+          <div className={planChangeClassName} data-testid="current-name">{updated.name}</div>
           <div className="confirm-grid-title">Seats</div>
-          <div className="confirm-grid-data">{previous.seats}</div>
-          <div className={seatChangeClassName}>{updated.seats}</div>
+          <div className="confirm-grid-data" data-testid="previous-seats">{previous.seats}</div>
+          <div className={seatChangeClassName} data-testid="current-seats">{updated.seats}</div>
           <div className="confirm-grid-title">Cost</div>
-          <div className="confirm-grid-data">{previous.cost}</div>
-          <div className={costChangeClassName}>{updated.cost}</div>
+          <div className="confirm-grid-data" data-testid="previous-cost">{previous.cost}</div>
+          <div className={costChangeClassName} data-testid="current-cost">{updated.cost}</div>
         </div>
         <button
           className="confirm-back-button"

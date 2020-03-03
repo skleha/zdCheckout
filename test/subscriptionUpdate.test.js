@@ -57,12 +57,7 @@ describe('Core specification tests', () => {
     const mockUpdateCurrentPlan = jest.fn();
     mockUpdateCurrentPlan.mockReturnValue(
       new Promise((resolve, reject) => {
-        resolve({
-          plan: "best",
-          name: "Best",
-          seats: 5,
-          cost: 5000
-        });
+        resolve(bestPlan);
       })
     );
 
@@ -119,12 +114,7 @@ describe('Core specification tests', () => {
     const mockUpdateCurrentPlan = jest.fn();
     mockUpdateCurrentPlan.mockReturnValue(
       new Promise((resolve, reject) => {
-        resolve({
-          plan: "best",
-          name: "Best",
-          seats: 5,
-          cost: 5000
-        });
+        resolve(bestPlan);
       })
     );
 
@@ -340,6 +330,55 @@ describe('Core specification tests', () => {
   });
 
   
+  it('The confirmation screen loads showing both previous and updated subscription details', async () => {
+    
+    // Mock fetchPreviousPlan function
+    const mockFetchPreviousPlan = jest.fn();
+    mockFetchPreviousPlan.mockReturnValue(
+      new Promise((resolve, reject) => {
+        resolve({plan: "good", name: "Good", seats: 5, cost: 500});
+      })
+    );
+    
+    const component = render(
+      <SupportConfirm
+        currentPlan={bestPlan}
+        previousPlan={goodPlan}
+        fetchPreviousPlan={mockFetchPreviousPlan}
+      />
+    )
+
+    // Scrape component for values
+    await wait(() => component.getByTestId('previous-name'));
+    let previousName = component.getByTestId('previous-name');
+    let previousSeats = component.getByTestId('previous-seats');
+    let previousCost = component.getByTestId('previous-cost');
+    let currentName = component.getByTestId('current-name');
+    let currentSeats = component.getByTestId('current-seats');
+    let currentCost = component.getByTestId('current-cost');
+    
+    // Compare values with expected
+    expect(previousName.innerHTML).toBe("Good");
+    expect(previousSeats.innerHTML).toBe("5");
+    expect(previousCost.innerHTML).toBe("50");
+    expect(currentName.innerHTML).toBe("Best");
+    expect(currentSeats.innerHTML).toBe("5");
+    expect(currentCost.innerHTML).toBe("5000");
+    
+  })
+
+
+  it('Updated details that differ from previous subscription have \'changed\' classname'), async () => {
+
+
+
+    
+  })
+
+
+
+
+
 
 
 
