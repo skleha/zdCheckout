@@ -191,7 +191,7 @@ describe('Core specification tests', () => {
   });
 
 
-  it("On plan change and \'Update Plan\' click, app sends correct data to api/current", async () => {
+  it("On plan change and \'Update\' click, app sends correct data to api/current", async () => {
     // Mock fetchPlanPricing method
     const mockFetchPlanPricing = jest.fn();
     mockFetchPlanPricing.mockReturnValue(
@@ -243,7 +243,7 @@ describe('Core specification tests', () => {
 
 
     // Update button is enabled
-    const button = component.getByText("Update Plan");
+    const button = component.getByText("Update");
     await waitForDomChange({ button });
     expect(button.disabled).toBe(false);
 
@@ -271,8 +271,8 @@ describe('Core specification tests', () => {
       />
     )
 
-    await wait(() => getByText('Update Plan'))
-    const button = getByText('Update Plan')
+    await wait(() => getByText('Update'))
+    const button = getByText('Update')
 
     expect(button.disabled).toBe(true)
   })
@@ -316,7 +316,7 @@ describe('Core specification tests', () => {
     });
 
     // Update button should enabled
-    let button = component.getByText("Update Plan");
+    let button = component.getByText("Update");
     await waitForDomChange({ button });
     expect(button.disabled).toBe(false);
 
@@ -326,7 +326,7 @@ describe('Core specification tests', () => {
     });
 
     // Update button should disabled
-    button = component.getByText("Update Plan");
+    button = component.getByText("Update");
     await waitForDomChange({ button });
     expect(button.disabled).toBe(true);
 
@@ -434,7 +434,7 @@ describe('Navigation test', () => {
   })
 
 
-  test('When \'Update Plan\' is clicked, confirmation page is rendered', async () => {
+  test('When \'Update\' is clicked, confirmation page is rendered', async () => {
     
     // Create mock promises
     const mockFetchCurrentPlan = jest.fn();
@@ -520,14 +520,14 @@ describe('Navigation test', () => {
     )
 
     // Change plan on subscription update
-    await wait(() => component.getByText('Update Plan'));
+    await wait(() => component.getByText('Update'));
     fireEvent.change(component.getByTestId('seats-select'), {
       target: { value: 10 },
     });
 
-    // Wait until 'Update Plan' page is enabled; click on 'Update Plan'
-    const button = component.getByText('Update Plan');
-    await wait(() => (component.getByText('Update Plan').disabled = false));
+    // Wait until 'Update' button is enabled; click on 'Update'
+    const button = component.getByText('Update');
+    await wait(() => (component.getByText('Update').disabled = false));
     fireEvent.click(button);
 
     // Wait until confirm page renders; ensure that update page *has* rendered

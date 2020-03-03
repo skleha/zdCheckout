@@ -118,7 +118,7 @@ class SupportUpdate extends React.Component {
           disabled={!this.state.updateButtonEnabled}
           onClick={this.handleUpdatePlanClick}
         >
-          Update Plan
+          Update
         </button>
       </div>
     );
