@@ -1,11 +1,14 @@
 import React from 'react';
+import { Provider } from 'react-redux';
+import { Router, MemoryRouter } from 'react-router-dom';
+import { createMemoryHistory } from 'history';
 import * as SubscriptionHelpers from '../frontend/helpers/supportHelpers';
 import SupportPlan from '../frontend/models/SupportPlan';
 import { cleanup, fireEvent, render, wait, getByPlaceholderText, getByTestId, waitForDomChange } from '@testing-library/react';
+import App from '../frontend/components/App';
 import SupportUpdate from '../frontend/components/updates/SupportUpdate';
 import SupportConfirm from '../frontend/components/confirms/SupportConfirm';
 import * as SubscriptionConstants from '../frontend/constants/constants';
-
 
 
 describe('Core specification tests', () => {
@@ -416,9 +419,28 @@ describe('Core specification tests', () => {
   })
 
 
-
-  // End of core specifications
 })
+
+
+describe("Navigation between update and confirm pages", () => {
+
+  test('Confirm back button returns to update page', () => {
+    const history = createMemoryHistory();
+    
+    const { container, getByText } = render(
+        
+        <MemoryRouter initialEntries={['/']} >
+          <App />
+        </MemoryRouter>
+    )
+    
+    expect(container.innerHTML).toMatch('Update Subscriptions');
+    
+  })
+
+})
+
+
 
 
 
