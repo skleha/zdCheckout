@@ -5,7 +5,7 @@ import Confirms from './Confirms';
 
 const App = () => (
   <div>
-    <Route exact path="/update" component={Updates} />
+    <Route exact path="/" component={Updates} />
     <Route exact path="/confirm" component={Confirms} />
   </div>
 );

@@ -16,7 +16,7 @@ class SupportConfirm extends React.Component {
   }
 
   handleBackClick(e) {
-    this.props.history.push('/update');
+    this.props.history.push('/');
   }
 
   render() {
