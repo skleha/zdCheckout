@@ -248,7 +248,6 @@ describe('Core specification tests', () => {
 
     // Validate that we're sending the correct data payload
     const [mockUpdatePlan] = mockUpdateCurrentPlan.mock.calls.pop();
-
     expect(mockUpdatePlan.plan).toBe("best");
     expect(mockUpdatePlan.name).toBe("Best");
     expect(mockUpdatePlan.seats).toBe(5);
@@ -364,25 +363,42 @@ describe('Core specification tests', () => {
     expect(currentName.innerHTML).toBe("Best");
     expect(currentSeats.innerHTML).toBe("5");
     expect(currentCost.innerHTML).toBe("5000");
+
+  })
+
+
+  it('Updated details that differ from previous subscription have \'changed\' classname', async () => {
+
+    // Mock fetchPreviousPlan function
+    const mockFetchPreviousPlan = jest.fn();
+    mockFetchPreviousPlan.mockReturnValue(
+      new Promise((resolve, reject) => {
+        resolve({ plan: "good", name: "Good", seats: 5, cost: 500 });
+      })
+    );
+
+    const component = render(
+      <SupportConfirm
+        currentPlan={bestPlan}
+        previousPlan={goodPlan}
+        fetchPreviousPlan={mockFetchPreviousPlan}
+      />
+    )
+
+    // Scrape component for values
+    await wait(() => component.getByTestId('current-name'));
+    let currentName = component.getByTestId('current-name');
+    let currentSeats = component.getByTestId('current-seats');
+    let currentCost = component.getByTestId('current-cost');
+
+    // Compare values with expected
+    expect(currentName.classList.contains('changed')).toBe(true);
+    expect(currentSeats.classList.contains('changed')).toBe(false);
+    expect(currentCost.classList.contains('changed')).toBe(true);
     
   })
 
 
-  it('Updated details that differ from previous subscription have \'changed\' classname'), async () => {
-
-
-
-    
-  })
-
-
-
-
-
-
-
-
-  
   it('The confirmation screen should include a \'Back\' button', async () => {
     
     const { getByTestId } = render(
