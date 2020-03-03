@@ -1,11 +1,14 @@
 import React from 'react';
+import { Provider } from 'react-redux';
+import { Router, MemoryRouter } from 'react-router-dom';
+import { createMemoryHistory } from 'history';
 import * as SubscriptionHelpers from '../frontend/helpers/supportHelpers';
 import SupportPlan from '../frontend/models/SupportPlan';
 import { cleanup, fireEvent, render, wait, getByPlaceholderText, getByTestId, waitForDomChange } from '@testing-library/react';
+import App from '../frontend/components/App';
 import SupportUpdate from '../frontend/components/updates/SupportUpdate';
 import SupportConfirm from '../frontend/components/confirms/SupportConfirm';
 import * as SubscriptionConstants from '../frontend/constants/constants';
-
 
 
 describe('Core specification tests', () => {
@@ -57,12 +60,7 @@ describe('Core specification tests', () => {
     const mockUpdateCurrentPlan = jest.fn();
     mockUpdateCurrentPlan.mockReturnValue(
       new Promise((resolve, reject) => {
-        resolve({
-          plan: "best",
-          name: "Best",
-          seats: 5,
-          cost: 5000
-        });
+        resolve(bestPlan);
       })
     );
 
@@ -119,12 +117,7 @@ describe('Core specification tests', () => {
     const mockUpdateCurrentPlan = jest.fn();
     mockUpdateCurrentPlan.mockReturnValue(
       new Promise((resolve, reject) => {
-        resolve({
-          plan: "best",
-          name: "Best",
-          seats: 5,
-          cost: 5000
-        });
+        resolve(bestPlan);
       })
     );
 
@@ -258,7 +251,6 @@ describe('Core specification tests', () => {
 
     // Validate that we're sending the correct data payload
     const [mockUpdatePlan] = mockUpdateCurrentPlan.mock.calls.pop();
-
     expect(mockUpdatePlan.plan).toBe("best");
     expect(mockUpdatePlan.name).toBe("Best");
     expect(mockUpdatePlan.seats).toBe(5);
@@ -340,10 +332,76 @@ describe('Core specification tests', () => {
   });
 
   
+  it('The confirmation screen loads showing both previous and updated subscription details', async () => {
+    
+    // Mock fetchPreviousPlan function
+    const mockFetchPreviousPlan = jest.fn();
+    mockFetchPreviousPlan.mockReturnValue(
+      new Promise((resolve, reject) => {
+        resolve({plan: "good", name: "Good", seats: 5, cost: 500});
+      })
+    );
+    
+    const component = render(
+      <SupportConfirm
+        currentPlan={bestPlan}
+        previousPlan={goodPlan}
+        fetchPreviousPlan={mockFetchPreviousPlan}
+      />
+    )
+
+    // Scrape component for values
+    await wait(() => component.getByTestId('previous-name'));
+    let previousName = component.getByTestId('previous-name');
+    let previousSeats = component.getByTestId('previous-seats');
+    let previousCost = component.getByTestId('previous-cost');
+    let currentName = component.getByTestId('current-name');
+    let currentSeats = component.getByTestId('current-seats');
+    let currentCost = component.getByTestId('current-cost');
+    
+    // Compare values with expected
+    expect(previousName.innerHTML).toBe("Good");
+    expect(previousSeats.innerHTML).toBe("5");
+    expect(previousCost.innerHTML).toBe("50");
+    expect(currentName.innerHTML).toBe("Best");
+    expect(currentSeats.innerHTML).toBe("5");
+    expect(currentCost.innerHTML).toBe("5000");
+
+  })
 
 
+  it('Updated details that differ from previous subscription have \'changed\' classname', async () => {
 
-  
+    // Mock fetchPreviousPlan function
+    const mockFetchPreviousPlan = jest.fn();
+    mockFetchPreviousPlan.mockReturnValue(
+      new Promise((resolve, reject) => {
+        resolve({ plan: "good", name: "Good", seats: 5, cost: 500 });
+      })
+    );
+
+    const component = render(
+      <SupportConfirm
+        currentPlan={bestPlan}
+        previousPlan={goodPlan}
+        fetchPreviousPlan={mockFetchPreviousPlan}
+      />
+    )
+
+    // Scrape component for values
+    await wait(() => component.getByTestId('current-name'));
+    let currentName = component.getByTestId('current-name');
+    let currentSeats = component.getByTestId('current-seats');
+    let currentCost = component.getByTestId('current-cost');
+
+    // Compare values with expected
+    expect(currentName.classList.contains('changed')).toBe(true);
+    expect(currentSeats.classList.contains('changed')).toBe(false);
+    expect(currentCost.classList.contains('changed')).toBe(true);
+    
+  })
+
+
   it('The confirmation screen should include a \'Back\' button', async () => {
     
     const { getByTestId } = render(
@@ -361,9 +419,28 @@ describe('Core specification tests', () => {
   })
 
 
-
-  // End of core specifications
 })
+
+
+describe("Navigation between update and confirm pages", () => {
+
+  test('Confirm back button returns to update page', () => {
+    const history = createMemoryHistory();
+    
+    const { container, getByText } = render(
+        
+        <MemoryRouter initialEntries={['/']} >
+          <App />
+        </MemoryRouter>
+    )
+    
+    expect(container.innerHTML).toMatch('Update Subscriptions');
+    
+  })
+
+})
+
+
 
 
 
