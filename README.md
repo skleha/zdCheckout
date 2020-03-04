@@ -39,18 +39,15 @@ easily added to the app.  For instance, the `Updates.jsx` shell component could 
 * __Redux.__  The redux store is not heavily used in this instance of the application; however,
 the store may figure prominently into any enhancements or extensions of the core functionality.  The shape of the
 store currently looks like:
-``` 
+
 {
     support: {  currentPlan: { plan: 'best', name: 'Best', seats: 5, cost: 5000 }, 
                 previousPlan: { plan: 'good', name: 'Good', seats: 5, cost: 50 },
                 availablePlans: { basic: "Basic", good: "Good", better: "Better", best:"Best" }
              }
 }
-```
 
-* __Mockjax.__  The backend is mimicked with MockJax.
-* __Jest and testing-library.__  Used to create the testing suite.
-* __Webpack / Babel.__
+
 
 #### The Testing Suite
 To run the testing suite, navigate to the root in terminal and `npm run test`.  An effort was made 
