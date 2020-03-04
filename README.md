@@ -48,7 +48,7 @@ store currently looks like:
              }
 }
 ```
-* __Mockjax.__ A fake backend is provided by Mockjax.  There are four APIs, and they include:
+* __Mockjax.__ A fake backend is provided by Mockjax.  There are five APIs, and they include:
 
     GET to "/api/current" fetches the current subscription<br>
     PUT to "/api/current" stores the current plan in previous plan, and replaces the currrent subscription with the payload<br>
