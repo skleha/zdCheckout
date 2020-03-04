@@ -40,13 +40,14 @@ easily added to the app.  For instance, the `Updates.jsx` shell component could 
 the store may figure prominently into any enhancements or extensions of the core functionality.  The shape of the
 store currently looks like:
 
+```
 {
     support: {  currentPlan: { plan: 'best', name: 'Best', seats: 5, cost: 5000 }, 
                 previousPlan: { plan: 'good', name: 'Good', seats: 5, cost: 50 },
                 availablePlans: { basic: "Basic", good: "Good", better: "Better", best:"Best" }
              }
 }
-
+```
 
 
 #### The Testing Suite
