@@ -48,6 +48,15 @@ store currently looks like:
              }
 }
 ```
+* __Mockjax.__ A fake backend is provided by Mockjax.  There are four APIs, and they include:
+
+    GET to "/api/current" fetches the current subscription<br>
+    PUT to "/api/current" stores the current plan in previous plan, and replaces the currrent subscription with the payload<br>
+    GET to "/api/previous" fetches the previous subscription<br>
+    GET to "/api/support/plans" fetches the availble plans for the "Support" product line<br>
+    GET to "/api/preview" fetches the pricing for a given plan / seat combination<br>
+    
+* __Webpack / Babel.__
 
 
 #### The Testing Suite
